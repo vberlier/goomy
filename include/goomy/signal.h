@@ -1,5 +1,6 @@
 #pragma once
 
+#include <experimental/type_traits>
 #include <type_traits>
 
 namespace goomy {
@@ -14,17 +15,13 @@ class SignalDispatcher {
     EngineType &engine;
 
 #define GENERATE_SIGNAL(NAME)                                                  \
-  private:                                                                     \
     template <typename T>                                                      \
-    using NAME##ReturnType =                                                   \
+    using NAME##Detector =                                                     \
         decltype(std::declval<T>().NAME(std::declval<EngineType &>()));        \
                                                                                \
-    template <typename T, typename = void>                                     \
-    struct NAME##Method : std::false_type {};                                  \
-                                                                               \
     template <typename T>                                                      \
-    struct NAME##Method<T, std::void_t<NAME##ReturnType<T>>>                   \
-        : std::is_same<NAME##ReturnType<T>, void> {};                          \
+    using NAME##Method = std::experimental::is_detected<NAME##Detector, T>;    \
+                                                                               \
     template <typename SystemType>                                             \
     typename std::enable_if_t<!NAME##Method<SystemType>{}> NAME##Signal() {    \
     }                                                                          \
