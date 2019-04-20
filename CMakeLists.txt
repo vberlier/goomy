@@ -3,7 +3,14 @@ project(goomy)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(${PROJECT_NAME} src/goomy.cpp include/goomy/goomy.h)
+add_library(${PROJECT_NAME}
+        include/goomy/engine.h
+        include/goomy.h
+        include/goomy/signal.h
+        include/goomy/util.h
+        )
+
 target_include_directories(${PROJECT_NAME} PUBLIC include)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 add_subdirectory(examples/basic)

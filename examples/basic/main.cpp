@@ -1,4 +1,8 @@
-#include "goomy/goomy.h"
-#include <iostream>
+#include "example.h"
 
-int main() { goomy::init(); }
+int main() {
+    Engine engine;
+    engine.loop();
+
+    return 0;
+}
