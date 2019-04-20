@@ -15,20 +15,35 @@ class SignalDispatcher {
     EngineType &engine;
 
 #define GENERATE_SIGNAL(NAME)                                                  \
+  private:                                                                     \
     template <typename T>                                                      \
     using NAME##Detector =                                                     \
         decltype(std::declval<T>().NAME(std::declval<EngineType &>()));        \
                                                                                \
     template <typename T>                                                      \
+    using NAME##DetectorOmit = decltype(std::declval<T>().NAME());             \
+                                                                               \
+    template <typename T>                                                      \
     using NAME##Method = std::experimental::is_detected<NAME##Detector, T>;    \
                                                                                \
+    template <typename T>                                                      \
+    using NAME##MethodOmit =                                                   \
+        std::experimental::is_detected<NAME##DetectorOmit, T>;                 \
+                                                                               \
     template <typename SystemType>                                             \
-    typename std::enable_if_t<!NAME##Method<SystemType>{}> NAME##Signal() {    \
+    typename std::enable_if_t<!NAME##Method<SystemType>{} &&                   \
+                              !NAME##MethodOmit<SystemType>{}>                 \
+        NAME##Signal() {                                                       \
     }                                                                          \
                                                                                \
     template <typename SystemType>                                             \
     typename std::enable_if_t<NAME##Method<SystemType>{}> NAME##Signal() {     \
         engine.template get<SystemType>().NAME(engine);                        \
+    }                                                                          \
+                                                                               \
+    template <typename SystemType>                                             \
+    typename std::enable_if_t<NAME##MethodOmit<SystemType>{}> NAME##Signal() { \
+        engine.template get<SystemType>().NAME();                              \
     }
 
 #define GENERATE_DISPATCHER(NAME)                                              \

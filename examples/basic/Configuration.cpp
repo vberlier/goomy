@@ -1,7 +1,7 @@
 #include "Configuration.h"
 #include "example.h"
 
-void Configuration::preinit(Engine &engine) {
+void Configuration::preinit() {
     foo = "hello";
     bar = "world";
     number = 42;

@@ -5,7 +5,7 @@
 
 class Configuration {
   public:
-    void preinit(Engine &engine);
+    void preinit();
 
     const std::string &getFoo() const;
     const std::string &getBar() const;
