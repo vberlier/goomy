@@ -3,7 +3,7 @@
 #include <goomy.h>
 
 class Configuration;
-class Foo;
-class Bar;
+class FooSystem;
+class BarSystem;
 
-using Engine = goomy::Engine<Configuration, Foo, Bar>;
+using Engine = goomy::Engine<goomy::Mount<Configuration, FooSystem, BarSystem>>;

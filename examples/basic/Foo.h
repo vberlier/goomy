@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 
-class Foo {
+class FooSystem {
   public:
     void init(Engine &engine);
     void update(Engine &engine);

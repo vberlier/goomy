@@ -5,7 +5,7 @@
 
 namespace goomy {
 
-template <typename EngineType>
+template <typename EngineType, typename... SystemTypes>
 class SignalDispatcher {
   public:
     explicit SignalDispatcher(EngineType &engine) : engine(engine) {
@@ -52,7 +52,6 @@ class SignalDispatcher {
     GENERATE_SIGNAL(post##NAME)                                                \
                                                                                \
   public:                                                                      \
-    template <typename... SystemTypes>                                         \
     void NAME() {                                                              \
         (pre##NAME##Signal<SystemTypes>(), ...);                               \
         (NAME##Signal<SystemTypes>(), ...);                                    \

@@ -2,12 +2,12 @@
 #include "example.h"
 #include <iostream>
 
-void Foo::init(Engine &engine) {
+void FooSystem::init(Engine &engine) {
     std::cout << "Configuration for foo: "
               << engine.get<Configuration>().getFoo() << std::endl;
 }
 
-void Foo::update(Engine &engine) {
+void FooSystem::update(Engine &engine) {
     std::cout << "The number is " << engine.get<Configuration>().getNumber()
               << std::endl;
 }

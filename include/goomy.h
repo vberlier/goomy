@@ -1,5 +1,5 @@
 #pragma once
 
-#include "goomy/engine.h"
-#include "goomy/signal.h"
+#include "goomy/Engine.h"
+#include "goomy/SignalDispatcher.h"
 #include "goomy/util.h"

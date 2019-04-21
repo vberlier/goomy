@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 
-class Bar {
+class BarSystem {
   public:
     void init(Engine &engine);
     void update(Engine &engine);

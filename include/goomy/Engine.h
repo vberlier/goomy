@@ -1,11 +1,19 @@
 #pragma once
 
-#include "goomy/signal.h"
+#include "goomy/SignalDispatcher.h"
 #include "goomy/util.h"
 
 namespace goomy {
 
 template <typename... SystemTypes>
+struct Mount {
+    using containerType = util::container<SystemTypes...>;
+
+    template <typename EngineType>
+    using signalDispatcherType = SignalDispatcher<EngineType, SystemTypes...>;
+};
+
+template <typename MountedSystems>
 class Engine {
   public:
     Engine() : signalDispatcher(*this), running(false) {
@@ -23,10 +31,10 @@ class Engine {
     void loop() {
         running = true;
 
-        signalDispatcher.template init<SystemTypes...>();
+        signalDispatcher.init();
 
         while (running) {
-            signalDispatcher.template update<SystemTypes...>();
+            signalDispatcher.update();
         }
     }
 
@@ -35,8 +43,10 @@ class Engine {
     }
 
   private:
-    util::container<SystemTypes...> systems;
-    SignalDispatcher<Engine<SystemTypes...>> signalDispatcher;
+    typename MountedSystems::containerType systems;
+    typename MountedSystems::template signalDispatcherType<
+        Engine<MountedSystems>>
+        signalDispatcher;
     bool running;
 };
 
