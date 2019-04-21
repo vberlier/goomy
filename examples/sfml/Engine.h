@@ -11,3 +11,5 @@ class Dummy;
 using Engine =
     goomy::Engine<goomy::Mount<Overlay, ResourceManager, Window>,
                   goomy::Components<Dummy>>;
+
+GOOMY_SIGNAL(onClick);

@@ -54,14 +54,18 @@ struct Signal {
 
 template <typename EngineType, typename... SystemTypes>
 class SignalDispatcher {
-public:
+  public:
     explicit SignalDispatcher(EngineType &engine) : engine(engine) {
     }
 
-    template <typename SignalType>
-    void dispatch() {
-        (Signal<SignalType>::invoke(engine.template get<SystemTypes>()),...);
-        (Signal<SignalType>::invoke(engine.template get<SystemTypes>(), engine),...);
+    template <typename SignalType, typename... Args>
+    void dispatch(Args &&... args) {
+        (invoke<SignalType>(engine.template get<SystemTypes>(),
+                            std::forward<Args>(args)...),
+         ...);
+        (invoke<SignalType>(engine.template get<SystemTypes>(), engine,
+                            std::forward<Args>(args)...),
+         ...);
     }
 
     void init() {
@@ -76,8 +80,13 @@ public:
         dispatch<signals::onAfterUpdate>();
     }
 
-private:
+  private:
     EngineType &engine;
+
+    template <typename SignalType, typename... Args>
+    void invoke(Args &&... args) {
+        Signal<SignalType>::invoke(std::forward<Args>(args)...);
+    }
 };
 
 }

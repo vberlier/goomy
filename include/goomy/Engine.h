@@ -49,6 +49,12 @@ class Engine : public EngineBase {
         return systems.template get<SystemType>();
     }
 
+    template <typename SignalType, typename... Args>
+    void dispatch(Args &&... args) {
+        signalDispatcher.template dispatch<SignalType>(
+            std::forward<Args>(args)...);
+    }
+
     entityType &getEntity(int index) {
         return entityRegistry[index];
     }

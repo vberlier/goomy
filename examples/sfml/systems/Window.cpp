@@ -8,7 +8,7 @@ void Window::onBeforeUpdate() {
     clear();
 }
 
-void Window::onUpdate() {
+void Window::onUpdate(Engine &engine) {
     sf::Event event{};
 
     while (pollEvent(event)) {
@@ -22,6 +22,8 @@ void Window::onUpdate() {
                            (float)event.size.height / 2);
 
             setView(view);
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            engine.dispatch<onClick>(event);
         }
     }
 }

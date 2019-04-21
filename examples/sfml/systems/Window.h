@@ -7,6 +7,6 @@ class Window : public sf::RenderWindow {
   public:
     Window();
     void onBeforeUpdate();
-    void onUpdate();
+    void onUpdate(Engine &engine);
     void onAfterUpdate(Engine &engine);
 };
