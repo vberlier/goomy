@@ -2,7 +2,8 @@
 
 #include "goomy/EngineBase.h"
 #include "goomy/EntityRegistry.h"
-#include "goomy/SignalDispatcher.h"
+#include "goomy/Signal.h"
+#include "goomy/System.h"
 
 namespace goomy {
 
