@@ -38,7 +38,7 @@ class Engine {
     Engine() : signalDispatcher(*this), entityRegistry(*this) {
     }
 
-    // Prevent copying
+    // Disallow copy
     Engine(const Engine &engine) = delete;
     void operator=(const Engine &engine) = delete;
 

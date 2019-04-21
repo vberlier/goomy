@@ -32,6 +32,16 @@ struct ComponentIndices<T> {
 template <typename... Ts>
 class Entity : public ComponentIndices<Ts...> {
   public:
+    Entity() = default;
+
+    // Disallow copy
+    Entity(const Entity &entity) = delete;
+    void operator=(const Entity &entity) = delete;
+
+    // Allow move
+    Entity(Entity &&entity) noexcept = default;
+    Entity &operator=(Entity &&entity) noexcept = default;
+
     template <typename T>
     bool has() {
         return ComponentIndices<Ts...>::template get<T>() >= 0;
