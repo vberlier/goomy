@@ -43,10 +43,10 @@ void FooSystem::onUpdate(Engine &engine) {
         std::cout << "Do something hard" << std::endl;
     }
 
-    auto &entity = engine.create_entity();
+    auto &entity = engine.createEntity();
 
     std::cout << entity.has<Transform>() << std::endl;
-    std::cout << engine.get_entity(0).get<Transform>() << std::endl;
+    std::cout << engine.getEntity(0).get<Transform>() << std::endl;
 }
 
 void BarSystem::onAfterUpdate(Engine &engine) {

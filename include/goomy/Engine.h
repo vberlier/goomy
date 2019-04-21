@@ -49,11 +49,11 @@ class Engine : public EngineBase {
         return systems.template get<SystemType>();
     }
 
-    entityType &get_entity(int index) {
+    entityType &getEntity(int index) {
         return entityRegistry[index];
     }
 
-    entityType &create_entity() {
+    entityType &createEntity() {
         return entityRegistry.create();
     }
 
