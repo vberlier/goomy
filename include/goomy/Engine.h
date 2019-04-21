@@ -7,7 +7,7 @@ namespace goomy {
 
 template <typename... SystemTypes>
 struct Mount {
-    using containerType = system_instances<SystemTypes...>;
+    using containerType = SystemContainer<SystemTypes...>;
 
     template <typename EngineType>
     using signalDispatcherType = SignalDispatcher<EngineType, SystemTypes...>;
@@ -25,7 +25,15 @@ struct Components {
 template <typename MountedSystems, typename DeclaredComponents>
 class Engine {
   public:
-    using Entity = typename DeclaredComponents::entityType;
+    using engineType = Engine<MountedSystems, DeclaredComponents>;
+
+    using systemContainerType = typename MountedSystems::containerType;
+    using signalDispatcherType =
+        typename MountedSystems::template signalDispatcherType<engineType>;
+
+    using entityType = typename DeclaredComponents::entityType;
+    using entityRegistryType =
+        typename DeclaredComponents::template entityRegistryType<engineType>;
 
     Engine() : signalDispatcher(*this), entityRegistry(*this) {
     }
@@ -39,11 +47,11 @@ class Engine {
         return systems.template get<SystemType>();
     }
 
-    Entity &get_entity(int index) {
+    entityType &get_entity(int index) {
         return entityRegistry[index];
     }
 
-    Entity &create_entity() {
+    entityType &create_entity() {
         return entityRegistry.create();
     }
 
@@ -62,15 +70,10 @@ class Engine {
     }
 
   private:
-    typename MountedSystems::containerType systems;
+    systemContainerType systems;
+    signalDispatcherType signalDispatcher;
 
-    typename MountedSystems::template signalDispatcherType<
-        Engine<MountedSystems, DeclaredComponents>>
-        signalDispatcher;
-
-    typename DeclaredComponents::template entityRegistryType<
-        Engine<MountedSystems, DeclaredComponents>>
-        entityRegistry;
+    entityRegistryType entityRegistry;
 
     bool running = false;
 };

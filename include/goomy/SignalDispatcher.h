@@ -6,13 +6,13 @@
 namespace goomy {
 
 template <typename T, typename... Ts>
-struct system_instances : system_instances<T>, system_instances<Ts...> {
-    using system_instances<T>::get;
-    using system_instances<Ts...>::get;
+struct SystemContainer : SystemContainer<T>, SystemContainer<Ts...> {
+    using SystemContainer<T>::get;
+    using SystemContainer<Ts...>::get;
 };
 
 template <typename T>
-struct system_instances<T> {
+struct SystemContainer<T> {
     template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
     U &get() {
         return instance;
