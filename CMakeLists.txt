@@ -14,4 +14,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC include)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 add_subdirectory(examples/basic)
+add_subdirectory(examples/sfml)
 add_subdirectory(examples/singlefile)
