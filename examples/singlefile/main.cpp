@@ -35,7 +35,9 @@ void FooSystem::init() {
 }
 
 void FooSystem::update(Engine &engine) {
-    if (engine.get<Settings>().difficulty == Difficulty::easy) {
+    auto &settings = engine.get<Settings>();
+
+    if (settings.difficulty == Difficulty::easy) {
         std::cout << "Do something easy" << std::endl;
     } else {
         std::cout << "Do something hard" << std::endl;

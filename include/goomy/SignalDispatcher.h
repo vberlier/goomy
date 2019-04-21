@@ -5,6 +5,16 @@
 
 namespace goomy {
 
+template <typename SystemType>
+class System : public SystemType {
+  public:
+    System() = default;
+
+    // Disallow copy
+    System(const System &system) = delete;
+    void operator=(const System &system) = delete;
+};
+
 template <typename T, typename... Ts>
 struct SystemContainer : SystemContainer<T>, SystemContainer<Ts...> {
     using SystemContainer<T>::get;
@@ -14,12 +24,12 @@ struct SystemContainer : SystemContainer<T>, SystemContainer<Ts...> {
 template <typename T>
 struct SystemContainer<T> {
     template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
-    U &get() {
+    System<U> &get() {
         return instance;
     }
 
   private:
-    T instance;
+    System<T> instance;
 };
 
 template <typename EngineType, typename... SystemTypes>

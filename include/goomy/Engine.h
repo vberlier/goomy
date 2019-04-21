@@ -43,7 +43,7 @@ class Engine {
     void operator=(const Engine &engine) = delete;
 
     template <typename SystemType>
-    SystemType &get() {
+    System<SystemType> &get() {
         return systems.template get<SystemType>();
     }
 
