@@ -2,7 +2,12 @@
 
 #include <goomy.h>
 
+class Overlay;
+class ResourceManager;
 class Window;
-class ExampleSystem;
 
-using Engine = goomy::Engine<goomy::Mount<Window, ExampleSystem>>;
+class Dummy;
+
+using Engine =
+    goomy::Engine<goomy::Mount<Overlay, ResourceManager, Window>,
+                  goomy::Components<Dummy>>;

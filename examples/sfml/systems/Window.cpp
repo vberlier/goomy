@@ -1,27 +1,35 @@
 #include "main.h"
 
-Window::Window() : sf::RenderWindow(sf::VideoMode(200, 200), "example_sfml") {
+Window::Window() : sf::RenderWindow(sf::VideoMode(600, 400), "example_sfml") {
+    setPosition(sf::Vector2i{1200, 300});
 }
 
 void Window::preupdate() {
     clear();
 }
 
-void Window::update(Engine &engine) {
+void Window::update() {
     sf::Event event{};
 
     while (pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             close();
-            engine.shutdown();
         } else if (event.type == sf::Event::Resized) {
             sf::View view = getView();
+
             view.setSize(event.size.width, event.size.height);
+            view.setCenter((float)event.size.width / 2,
+                           (float)event.size.height / 2);
+
             setView(view);
         }
     }
 }
 
-void Window::postupdate() {
-    display();
+void Window::postupdate(Engine &engine) {
+    if (isOpen()) {
+        display();
+    } else {
+        engine.shutdown();
+    }
 }

@@ -3,14 +3,20 @@ project(example_sfml)
 find_package(SFML REQUIRED graphics)
 include_directories(${SFML_INCLUDE_DIR})
 
+add_compile_definitions(EXAMPLE_SFML_RESOURCES_DIR="${PROJECT_SOURCE_DIR}/resources")
+
 add_executable(${PROJECT_NAME}
+        systems/Overlay.cpp
+        systems/Overlay.h
+        systems/ResourceManager.cpp
+        systems/ResourceManager.h
+        systems/Window.cpp
+        systems/Window.h
         Engine.h
-        ExampleSystem.cpp
-        ExampleSystem.h
         main.cpp
         main.h
-        Window.cpp
-        Window.h
         )
+
+include_directories(${PROJECT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC goomy sfml-graphics)

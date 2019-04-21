@@ -1,5 +1,6 @@
 #pragma once
 
 #include "Engine.h"
-#include "ExampleSystem.h"
-#include "Window.h"
+#include "systems/Overlay.h"
+#include "systems/ResourceManager.h"
+#include "systems/Window.h"

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "goomy/EngineBase.h"
 #include "goomy/EntityRegistry.h"
 #include "goomy/SignalDispatcher.h"
 
@@ -23,7 +24,7 @@ struct Components {
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
-class Engine {
+class Engine : public EngineBase {
   public:
     using engineType = Engine<MountedSystems, DeclaredComponents>;
 
@@ -56,26 +57,20 @@ class Engine {
     }
 
     void loop() {
-        running = true;
+        start();
 
         signalDispatcher.init();
 
-        while (running) {
+        while (isRunning()) {
+            frameTick();
             signalDispatcher.update();
         }
-    }
-
-    void shutdown() {
-        running = false;
     }
 
   private:
     systemContainerType systems;
     signalDispatcherType signalDispatcher;
-
     entityRegistryType entityRegistry;
-
-    bool running = false;
 };
 
 }

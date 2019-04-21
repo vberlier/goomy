@@ -8,7 +8,7 @@ add_library(${PROJECT_NAME}
         include/goomy/EntityRegistry.h
         include/goomy/SignalDispatcher.h
         include/goomy.h
-        )
+        src/EngineBase.cpp include/goomy/EngineBase.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
