@@ -5,7 +5,12 @@ class Settings;
 class FooSystem;
 class BarSystem;
 
-using Engine = goomy::Engine<goomy::Mount<Settings, FooSystem, BarSystem>>;
+class Transform;
+class Collider;
+class Renderer;
+
+using Engine = goomy::Engine<goomy::Mount<Settings, FooSystem, BarSystem>,
+                             goomy::Components<Transform, Collider, Renderer>>;
 
 enum class Difficulty { easy, hard };
 
@@ -35,6 +40,11 @@ void FooSystem::update(Engine &engine) {
     } else {
         std::cout << "Do something hard" << std::endl;
     }
+
+    auto &entity = engine.create_entity();
+
+    std::cout << entity.has<Transform>() << std::endl;
+    std::cout << engine.get_entity(0).get<Transform>() << std::endl;
 }
 
 void BarSystem::postupdate(Engine &engine) {

@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_library(${PROJECT_NAME}
         include/goomy/Engine.h
-        include/goomy.h
+        include/goomy/EntityRegistry.h
         include/goomy/SignalDispatcher.h
-        include/goomy/util.h
+        include/goomy.h
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)

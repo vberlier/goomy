@@ -5,6 +5,23 @@
 
 namespace goomy {
 
+template <typename T, typename... Ts>
+struct system_instances : system_instances<T>, system_instances<Ts...> {
+    using system_instances<T>::get;
+    using system_instances<Ts...>::get;
+};
+
+template <typename T>
+struct system_instances<T> {
+    template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
+    U &get() {
+        return instance;
+    }
+
+  private:
+    T instance;
+};
+
 template <typename EngineType, typename... SystemTypes>
 class SignalDispatcher {
   public:

@@ -1,22 +1,33 @@
 #pragma once
 
+#include "goomy/EntityRegistry.h"
 #include "goomy/SignalDispatcher.h"
-#include "goomy/util.h"
 
 namespace goomy {
 
 template <typename... SystemTypes>
 struct Mount {
-    using containerType = util::container<SystemTypes...>;
+    using containerType = system_instances<SystemTypes...>;
 
     template <typename EngineType>
     using signalDispatcherType = SignalDispatcher<EngineType, SystemTypes...>;
 };
 
-template <typename MountedSystems>
+template <typename... ComponentTypes>
+struct Components {
+    using entityType = Entity<ComponentTypes...>;
+
+    template <typename EngineType>
+    using entityRegistryType =
+        EntityRegistry<EngineType, entityType, ComponentTypes...>;
+};
+
+template <typename MountedSystems, typename DeclaredComponents>
 class Engine {
   public:
-    Engine() : signalDispatcher(*this), running(false) {
+    using Entity = typename DeclaredComponents::entityType;
+
+    Engine() : signalDispatcher(*this), entityRegistry(*this) {
     }
 
     // Prevent copying
@@ -26,6 +37,14 @@ class Engine {
     template <typename SystemType>
     SystemType &get() {
         return systems.template get<SystemType>();
+    }
+
+    Entity &get_entity(int index) {
+        return entityRegistry[index];
+    }
+
+    Entity &create_entity() {
+        return entityRegistry.create();
     }
 
     void loop() {
@@ -44,10 +63,16 @@ class Engine {
 
   private:
     typename MountedSystems::containerType systems;
+
     typename MountedSystems::template signalDispatcherType<
-        Engine<MountedSystems>>
+        Engine<MountedSystems, DeclaredComponents>>
         signalDispatcher;
-    bool running;
+
+    typename DeclaredComponents::template entityRegistryType<
+        Engine<MountedSystems, DeclaredComponents>>
+        entityRegistry;
+
+    bool running = false;
 };
 
 }
