@@ -6,7 +6,7 @@
 class ResourceManager {
   public:
     ResourceManager();
-    void postupdate();
+    void onAfterUpdate();
 
     void reload();
     void reload(std::string directory);

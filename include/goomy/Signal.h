@@ -18,13 +18,13 @@ namespace goomy {
 
 namespace signals {
 
-GOOMY_SIGNAL(preinit);
-GOOMY_SIGNAL(init);
-GOOMY_SIGNAL(postinit);
+GOOMY_SIGNAL(onBeforeInit);
+GOOMY_SIGNAL(onInit);
+GOOMY_SIGNAL(onAfterInit);
 
-GOOMY_SIGNAL(preupdate);
-GOOMY_SIGNAL(update);
-GOOMY_SIGNAL(postupdate);
+GOOMY_SIGNAL(onBeforeUpdate);
+GOOMY_SIGNAL(onUpdate);
+GOOMY_SIGNAL(onAfterUpdate);
 
 } // namespace signals
 
@@ -65,15 +65,15 @@ public:
     }
 
     void init() {
-        dispatch<signals::preinit>();
-        dispatch<signals::init>();
-        dispatch<signals::postinit>();
+        dispatch<signals::onBeforeInit>();
+        dispatch<signals::onInit>();
+        dispatch<signals::onAfterInit>();
     }
 
     void update() {
-        dispatch<signals::preupdate>();
-        dispatch<signals::update>();
-        dispatch<signals::postupdate>();
+        dispatch<signals::onBeforeUpdate>();
+        dispatch<signals::onUpdate>();
+        dispatch<signals::onAfterUpdate>();
     }
 
 private:

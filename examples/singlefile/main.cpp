@@ -21,20 +21,20 @@ class Settings {
 
 class FooSystem {
   public:
-    void init();
-    void update(Engine &engine);
+    void onInit();
+    void onUpdate(Engine &engine);
 };
 
 class BarSystem {
   public:
-    void postupdate(Engine &engine);
+    void onAfterUpdate(Engine &engine);
 };
 
-void FooSystem::init() {
+void FooSystem::onInit() {
     std::cout << "Init foo" << std::endl;
 }
 
-void FooSystem::update(Engine &engine) {
+void FooSystem::onUpdate(Engine &engine) {
     auto &settings = engine.get<Settings>();
 
     if (settings.difficulty == Difficulty::easy) {
@@ -49,7 +49,7 @@ void FooSystem::update(Engine &engine) {
     std::cout << engine.get_entity(0).get<Transform>() << std::endl;
 }
 
-void BarSystem::postupdate(Engine &engine) {
+void BarSystem::onAfterUpdate(Engine &engine) {
     std::cout << "Shutting down" << std::endl;
     engine.shutdown();
 }

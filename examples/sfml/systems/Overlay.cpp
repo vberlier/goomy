@@ -3,7 +3,7 @@
 #include <cmath>
 #include <string>
 
-void Overlay::update(Engine &engine) {
+void Overlay::onUpdate(Engine &engine) {
     auto &window = engine.get<Window>();
     auto &resourceManager = engine.get<ResourceManager>();
 

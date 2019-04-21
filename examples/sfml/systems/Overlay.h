@@ -5,7 +5,7 @@
 
 class Overlay {
   public:
-    void update(Engine &engine);
+    void onUpdate(Engine &engine);
 
   private:
     std::string getString(Engine &engine);

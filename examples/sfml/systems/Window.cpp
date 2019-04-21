@@ -4,11 +4,11 @@ Window::Window() : sf::RenderWindow(sf::VideoMode(600, 400), "example_sfml") {
     setPosition(sf::Vector2i{1200, 300});
 }
 
-void Window::preupdate() {
+void Window::onBeforeUpdate() {
     clear();
 }
 
-void Window::update() {
+void Window::onUpdate() {
     sf::Event event{};
 
     while (pollEvent(event)) {
@@ -26,7 +26,7 @@ void Window::update() {
     }
 }
 
-void Window::postupdate(Engine &engine) {
+void Window::onAfterUpdate(Engine &engine) {
     if (isOpen()) {
         display();
     } else {

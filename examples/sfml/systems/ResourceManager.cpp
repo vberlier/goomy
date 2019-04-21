@@ -9,7 +9,7 @@ ResourceManager::ResourceManager()
     loadResources();
 }
 
-void ResourceManager::postupdate() {
+void ResourceManager::onAfterUpdate() {
     if (shouldReload) {
         loadResources();
     }
