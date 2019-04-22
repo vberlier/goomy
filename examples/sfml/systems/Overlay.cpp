@@ -3,7 +3,7 @@
 #include <cmath>
 #include <string>
 
-Overlay::Overlay() : lastClickedX(0), lastClickedY(0) {
+Overlay::Overlay() : mouseX(0), mouseY(0), lastClickedX(0), lastClickedY(0) {
 }
 
 void Overlay::onUpdate(Engine &engine) {
@@ -15,6 +15,11 @@ void Overlay::onUpdate(Engine &engine) {
     text.setCharacterSize(16);
 
     window.draw(text);
+}
+
+void Overlay::onMouseMove(Engine &engine, sf::Event &event) {
+    mouseX = event.mouseMove.x;
+    mouseY = event.mouseMove.y;
 }
 
 void Overlay::onClick(Engine &engine, sf::Event &event) {
@@ -37,6 +42,8 @@ std::string Overlay::getString(Engine &engine) {
     return "Elapsed: " + std::to_string(elapsed) + "s\n" +
            "Frame duration: " + std::to_string(frameDuration) + "ms\n" +
            "Frames per second: " + std::to_string((int)framesPerSecond) + "\n" +
+           "Mouse position: " + std::to_string(mouseX) + " " +
+           std::to_string(mouseY) + "\n" +
            "Last click: " + std::to_string(lastClickedX) + " " +
            std::to_string(lastClickedY);
 }

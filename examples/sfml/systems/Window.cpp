@@ -22,6 +22,8 @@ void Window::onUpdate(Engine &engine) {
                            (float)event.size.height / 2);
 
             setView(view);
+        } else if (event.type == sf::Event::MouseMoved) {
+            engine.dispatch<onMouseMove>(event);
         } else if (event.type == sf::Event::MouseButtonPressed) {
             engine.dispatch<onClick>(event);
         }

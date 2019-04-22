@@ -9,9 +9,12 @@ class Overlay {
     Overlay();
 
     void onUpdate(Engine &engine);
+    void onMouseMove(Engine &engine, sf::Event &event);
     void onClick(Engine &engine, sf::Event &event);
 
   private:
+    int mouseX;
+    int mouseY;
     int lastClickedX;
     int lastClickedY;
 
