@@ -1,7 +1,7 @@
 #pragma once
 
 #include "goomy/EngineBase.h"
-#include "goomy/EntityRegistry.h"
+#include "goomy/Entity.h"
 #include "goomy/Signal.h"
 #include "goomy/System.h"
 
@@ -21,7 +21,7 @@ struct Components {
 
     template <typename EngineType>
     using entityRegistryType =
-        EntityRegistry<EngineType, entityType, ComponentTypes...>;
+        EntityRegistry<EngineType, entityType>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>

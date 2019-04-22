@@ -2,6 +2,6 @@
 
 #include "goomy/Engine.h"
 #include "goomy/EngineBase.h"
-#include "goomy/EntityRegistry.h"
+#include "goomy/Entity.h"
 #include "goomy/Signal.h"
 #include "goomy/System.h"

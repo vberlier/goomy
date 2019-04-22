@@ -50,7 +50,7 @@ class Entity : public ComponentIndices<Ts...> {
     }
 };
 
-template <typename EngineType, typename EntityType, typename... ComponentTypes>
+template <typename EngineType, typename EntityType>
 class EntityRegistry {
   public:
     explicit EntityRegistry(EngineType &engine) : engine(engine) {

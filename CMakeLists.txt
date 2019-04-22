@@ -7,7 +7,7 @@ add_library(${PROJECT_NAME}
         include/goomy/Engine.h
         include/goomy/EngineBase.h
         src/EngineBase.cpp
-        include/goomy/EntityRegistry.h
+        include/goomy/Entity.h
         include/goomy/System.h
         include/goomy/Signal.h
         include/goomy.h
