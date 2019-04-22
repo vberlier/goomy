@@ -17,24 +17,24 @@ template <typename T>
 struct ComponentIndices<T> {
     template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
     int get() {
-        return index;
+        return componentIndex;
     }
 
     template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
     void set(int i) {
-        index = i;
+        componentIndex = i;
     }
 
   private:
-    int index = -1;
+    int componentIndex = -1;
 };
 
 template <typename... Ts>
 class Entity : public ComponentIndices<Ts...> {
   public:
-    int id;
+    int index;
 
-    Entity(int i) : id(i) {
+    Entity(int i) : index(i) {
     }
 
     // Disallow copy

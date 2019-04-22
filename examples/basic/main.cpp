@@ -46,8 +46,9 @@ void FooSystem::onUpdate(Engine &engine) {
     auto &entity = engine.createEntity();
 
     std::cout << entity.has<Transform>() << std::endl;
-    std::cout << engine.getEntity(entity.id).get<Transform>() << std::endl;
-    std::cout << engine.createEntity().id << std::endl;
+    std::cout << engine.getEntity(entity.index).get<Transform>() << std::endl;
+    std::cout << engine.createEntity().index << std::endl;
+    std::cout << engine.entityCount() << std::endl;
 }
 
 void BarSystem::onAfterUpdate(Engine &engine) {
