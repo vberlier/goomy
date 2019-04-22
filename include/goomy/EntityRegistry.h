@@ -32,7 +32,9 @@ struct ComponentIndices<T> {
 template <typename... Ts>
 class Entity : public ComponentIndices<Ts...> {
   public:
-    Entity() = default;
+    int id;
+
+    Entity(int i) : id(i) {}
 
     // Disallow copy
     Entity(const Entity &entity) = delete;
@@ -59,7 +61,7 @@ class EntityRegistry {
     }
 
     EntityType &create() {
-        entities.emplace_back();
+        entities.emplace_back(entities.size());
         return entities.back();
     }
 
