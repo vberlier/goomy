@@ -45,5 +45,6 @@ std::string Overlay::getString(Engine &engine) {
            "Mouse position: " + std::to_string(mouseX) + " " +
            std::to_string(mouseY) + "\n" +
            "Last click: " + std::to_string(lastClickedX) + " " +
-           std::to_string(lastClickedY);
+           std::to_string(lastClickedY) + "\n" +
+           "Entity count: " + std::to_string(engine.entityCount());
 }

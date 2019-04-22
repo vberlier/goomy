@@ -74,6 +74,10 @@ class Engine : public EngineBase {
         }
     }
 
+    std::size_t entityCount() {
+        return entityRegistry.size();
+    }
+
   private:
     systemContainerType systems;
     signalDispatcherType signalDispatcher;

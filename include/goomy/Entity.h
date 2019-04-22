@@ -34,7 +34,8 @@ class Entity : public ComponentIndices<Ts...> {
   public:
     int id;
 
-    Entity(int i) : id(i) {}
+    Entity(int i) : id(i) {
+    }
 
     // Disallow copy
     Entity(const Entity &entity) = delete;
@@ -54,6 +55,10 @@ template <typename EngineType, typename EntityType>
 class EntityRegistry {
   public:
     explicit EntityRegistry(EngineType &engine) : engine(engine) {
+    }
+
+    std::size_t size() {
+        return entities.size();
     }
 
     EntityType &operator[](int index) {
