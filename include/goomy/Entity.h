@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <type_traits>
 #include <vector>
 
@@ -62,17 +63,24 @@ class EntityRegistry {
     }
 
     EntityType &operator[](int index) {
-        return entities[index];
+        int size = entities.size();
+        return index < size ? entities[index] : created[index - size];
     }
 
     EntityType &create() {
-        entities.emplace_back(entities.size());
-        return entities.back();
+        created.emplace_back(entities.size() + created.size());
+        return created.back();
+    }
+
+    void flush() {
+        std::move(created.begin(), created.end(), std::back_inserter(entities));
+        created.clear();
     }
 
   private:
     EngineType &engine;
     std::vector<EntityType> entities;
+    std::vector<EntityType> created;
 };
 
 }

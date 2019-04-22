@@ -20,8 +20,7 @@ struct Components {
     using entityType = Entity<ComponentTypes...>;
 
     template <typename EngineType>
-    using entityRegistryType =
-        EntityRegistry<EngineType, entityType>;
+    using entityRegistryType = EntityRegistry<EngineType, entityType>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
@@ -71,6 +70,7 @@ class Engine : public EngineBase {
         while (isRunning()) {
             frameTick();
             signalDispatcher.update();
+            entityRegistry.flush();
         }
     }
 

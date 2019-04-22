@@ -27,7 +27,10 @@ class FooSystem {
 
 class BarSystem {
   public:
-    void onAfterUpdate(Engine &engine);
+    void onBeforeUpdate(Engine &engine);
+
+  private:
+    int frame = 0;
 };
 
 void FooSystem::onInit() {
@@ -43,17 +46,34 @@ void FooSystem::onUpdate(Engine &engine) {
         std::cout << "Do something hard" << std::endl;
     }
 
-    auto &entity = engine.createEntity();
+    auto &foo = engine.createEntity();
+    std::cout << "Created foo: " << foo.index << std::endl;
 
-    std::cout << entity.has<Transform>() << std::endl;
-    std::cout << engine.getEntity(entity.index).get<Transform>() << std::endl;
-    std::cout << engine.createEntity().index << std::endl;
-    std::cout << engine.entityCount() << std::endl;
+    foo.set<Transform>(engine.entityCount() + 42);
+    std::cout << "Foo transform: "
+              << engine.getEntity(foo.index).get<Transform>() << std::endl;
+
+    std::cout << "All entities:" << std::endl;
+
+    for (int i = 0; i < engine.entityCount(); ++i) {
+        std::cout << engine.getEntity(i).index << " has transform "
+                  << engine.getEntity(i).get<Transform>() << std::endl;
+    }
+
+    std::cout << "Foo index: " << engine.getEntity(engine.entityCount()).index
+              << std::endl;
 }
 
-void BarSystem::onAfterUpdate(Engine &engine) {
-    std::cout << "Shutting down" << std::endl;
-    engine.shutdown();
+void BarSystem::onBeforeUpdate(Engine &engine) {
+    std::cout << "-> Frame " << frame << std::endl;
+    std::cout << "Entity count " << engine.entityCount() << std::endl;
+
+    if (frame >= 5) {
+        std::cout << "Shutting down" << std::endl;
+        engine.shutdown();
+    }
+
+    frame++;
 }
 
 int main() {
