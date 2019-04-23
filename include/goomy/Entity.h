@@ -58,7 +58,7 @@ class EntityManager {
         registry.destroy(entity);
     }
 
-    void update() {
+    void flush() {
         registry.flush();
     }
 

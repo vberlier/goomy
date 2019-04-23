@@ -65,7 +65,7 @@ class Engine : public EngineBase {
         while (isRunning()) {
             frameTick();
             systemManager.update();
-            entityManager.update();
+            entityManager.flush();
         }
     }
 
