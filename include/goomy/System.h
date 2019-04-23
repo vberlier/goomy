@@ -36,7 +36,7 @@ struct SystemContainer<T> {
 template <typename EngineType, typename... SystemTypes>
 class SystemManager {
   public:
-    explicit SystemManager(EngineType &engine) : signalDispatcher(engine) {
+    explicit SystemManager(EngineType &engine) : engine(engine) {
     }
 
     template <typename SystemType>
@@ -46,8 +46,12 @@ class SystemManager {
 
     template <typename SignalType, typename... Args>
     void dispatch(Args &&... args) {
-        signalDispatcher.template dispatch<SignalType>(
-            std::forward<Args>(args)...);
+        (invoke<SignalType>(engine.template get<SystemTypes>(),
+                            std::forward<Args>(args)...),
+            ...);
+        (invoke<SignalType>(engine.template get<SystemTypes>(), engine,
+                            std::forward<Args>(args)...),
+            ...);
     }
 
     void init() {
@@ -63,8 +67,13 @@ class SystemManager {
     }
 
   private:
+    EngineType &engine = engine;
     SystemContainer<SystemTypes...> container;
-    SignalDispatcher<EngineType, SystemTypes...> signalDispatcher;
+
+    template <typename SignalType, typename... Args>
+    void invoke(Args &&... args) {
+        Signal<SignalType>::invoke(std::forward<Args>(args)...);
+    }
 };
 
 }
