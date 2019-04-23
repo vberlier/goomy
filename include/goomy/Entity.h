@@ -57,6 +57,14 @@ class EntityManager {
         return registry.get(index);
     }
 
+    template <typename ComponentType,
+              typename = std::enable_if_t<std::is_class<ComponentType>{}>>
+    auto &getEntity(ComponentType &component) {
+        return registry.get(
+            static_cast<Component<entityType, ComponentType> &>(component)
+                .getEntityIndex());
+    }
+
     template <typename ComponentType>
     auto &getComponent(entityType &entity) {
         auto &components = componentRegistries.template get<ComponentType>();
@@ -123,6 +131,14 @@ class EntityManager {
 
     std::size_t getEntityCount() const {
         return registry.size();
+    }
+
+    auto &getRegistry() {
+        return registry;
+    }
+
+    auto &getComponentRegistries() {
+        return componentRegistries;
     }
 
   private:

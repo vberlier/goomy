@@ -50,25 +50,8 @@ void Overlay::onClick(Engine &engine, sf::Event &event) {
     auto &entityManager = engine.getEntityManager();
 
     auto &entity = entityManager.createEntity();
-
-    if (entityManager.getEntityCount() > 12) {
-        for (int i = 1; i < 8; ++i) {
-            auto &e = entityManager.getEntity(i);
-
-            if (e.has<Dummy>()) {
-                entityManager.destroyComponent<Dummy>(e);
-            }
-        }
-    }
-
-    if (entityManager.getEntityCount() > 24) {
-        for (int i = 3; i < entityManager.getEntityCount() - 2; ++i) {
-            entityManager.destroyEntity(entityManager.getEntity(i));
-        }
-    } else {
-        entityManager.createComponent<Dummy>(entity, lastClickedX,
-                                             lastClickedY);
-    }
+    entityManager.createComponent<Dummy>(entity, lastClickedX, lastClickedY);
+    entityManager.createComponent<Age>(entity, 10000);
 }
 
 std::string Overlay::getString(Engine &engine) {
@@ -94,8 +77,14 @@ std::string Overlay::getString(Engine &engine) {
 
     for (int i = 0; i < entityManager.getEntityCount(); ++i) {
         auto &entity = entityManager.getEntity(i);
+        auto &dummy = entityManager.getComponent<Dummy>(entity);
+        auto &age = entityManager.getComponent<Age>(entity);
+
         result += "\n Entity #" + std::to_string(entity.getIndex()) +
-                  " with dummy " + std::to_string(entity.get<Dummy>());
+                  " with dummy " + std::to_string(entity.get<Dummy>()) + " (" +
+                  std::to_string(dummy.x) + ", " + std::to_string(dummy.y) +
+                  ") and age " + std::to_string(entity.get<Age>()) + ": " +
+                  std::to_string(age.age);
     }
 
     return result;

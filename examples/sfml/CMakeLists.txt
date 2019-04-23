@@ -6,6 +6,8 @@ include_directories(${SFML_INCLUDE_DIR})
 add_compile_definitions(EXAMPLE_SFML_RESOURCES_DIR="${PROJECT_SOURCE_DIR}/resources")
 
 add_executable(${PROJECT_NAME}
+        systems/AgeSystem.cpp
+        systems/AgeSystem.h
         systems/Overlay.cpp
         systems/Overlay.h
         systems/ResourceManager.cpp

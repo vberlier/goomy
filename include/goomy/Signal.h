@@ -52,4 +52,56 @@ struct Signal {
     }
 };
 
+template <typename SystemManagerType, typename EntityManagerType,
+          typename... ComponentTypes>
+class SignalDispatcher {
+  public:
+    SignalDispatcher(SystemManagerType &systemManager,
+                     EntityManagerType &entityManager)
+        : systemManager(systemManager), entityManager(entityManager) {
+    }
+
+    template <typename SignalType, typename... Args>
+    void dispatch(Args &&... args) {
+        systemManager.template dispatch<SignalType>(
+            std::forward<Args>(args)...);
+        (dispatchWithComponent<SignalType, ComponentTypes>(
+             std::forward<Args>(args)...),
+         ...);
+    }
+
+    void init() {
+        dispatch<signals::onBeforeInit>();
+        dispatch<signals::onInit>();
+        dispatch<signals::onAfterInit>();
+    }
+
+    void update() {
+        dispatch<signals::onBeforeUpdate>();
+        dispatch<signals::onUpdate>();
+        dispatch<signals::onAfterUpdate>();
+    }
+
+  private:
+    SystemManagerType &systemManager;
+    EntityManagerType &entityManager;
+
+    template <typename SignalType, typename ComponentType, typename... Args>
+    void dispatchWithComponent(Args &&... args) {
+        auto &registry = entityManager.getComponentRegistries()
+                             .template get<ComponentType>();
+
+        for (auto i = 0; i < registry.size(); i++) {
+            auto &component = registry.get(i);
+
+            systemManager.template dispatch<SignalType>(
+                component, std::forward<Args>(args)...);
+
+            systemManager.template dispatch<SignalType>(
+                component, entityManager.getEntity(component.getEntityIndex()),
+                std::forward<Args>(args)...);
+        }
+    }
+};
+
 }

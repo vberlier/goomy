@@ -2,6 +2,7 @@
 
 #include "goomy/EngineBase.h"
 #include "goomy/Entity.h"
+#include "goomy/Signal.h"
 #include "goomy/System.h"
 
 namespace goomy {
@@ -15,6 +16,11 @@ struct Mount {
 template <typename... ComponentTypes>
 struct Components {
     using entityManagerType = EntityManager<ComponentTypes...>;
+
+    template <typename systemManagerType>
+    using signalDispatcherType =
+        SignalDispatcher<systemManagerType, entityManagerType,
+                         ComponentTypes...>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
@@ -27,7 +33,12 @@ class Engine : public EngineBase {
 
     using entityManagerType = typename DeclaredComponents::entityManagerType;
 
-    Engine() : systemManager(*this) {
+    using signalDispatcherType =
+        typename DeclaredComponents::template signalDispatcherType<
+            systemManagerType>;
+
+    Engine()
+        : systemManager(*this), signalDispatcher(systemManager, entityManager) {
     }
 
     // Disallow copy
@@ -41,7 +52,7 @@ class Engine : public EngineBase {
 
     template <typename SignalType, typename... Args>
     void dispatch(Args &&... args) {
-        systemManager.template dispatch<SignalType>(
+        signalDispatcher.template dispatch<SignalType>(
             std::forward<Args>(args)...);
     }
 
@@ -52,11 +63,11 @@ class Engine : public EngineBase {
     void loop() {
         start();
 
-        systemManager.init();
+        signalDispatcher.init();
 
         while (isRunning()) {
             frameTick();
-            systemManager.update();
+            signalDispatcher.update();
             entityManager.flush();
         }
     }
@@ -64,6 +75,7 @@ class Engine : public EngineBase {
   private:
     systemManagerType systemManager;
     entityManagerType entityManager;
+    signalDispatcherType signalDispatcher;
 };
 
 }

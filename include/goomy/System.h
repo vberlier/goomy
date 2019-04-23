@@ -54,18 +54,6 @@ class SystemManager {
          ...);
     }
 
-    void init() {
-        dispatch<signals::onBeforeInit>();
-        dispatch<signals::onInit>();
-        dispatch<signals::onAfterInit>();
-    }
-
-    void update() {
-        dispatch<signals::onBeforeUpdate>();
-        dispatch<signals::onUpdate>();
-        dispatch<signals::onAfterUpdate>();
-    }
-
   private:
     EngineType &engine = engine;
     SystemContainer<SystemTypes...> container;
