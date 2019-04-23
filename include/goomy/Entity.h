@@ -33,54 +33,10 @@ struct ComponentIndices<T> {
 template <typename... Ts>
 class Entity : public ComponentIndices<Ts...> {
   public:
-    int index;
-
-    Entity(int i) : index(i) {
-    }
-
-    // Disallow copy
-    Entity(const Entity &entity) = delete;
-    void operator=(const Entity &entity) = delete;
-
-    // Allow move
-    Entity(Entity &&entity) noexcept = default;
-    Entity &operator=(Entity &&entity) noexcept = default;
-
     template <typename T>
     bool has() {
         return ComponentIndices<Ts...>::template get<T>() >= 0;
     }
-};
-
-template <typename EngineType, typename EntityType>
-class EntityRegistry {
-  public:
-    explicit EntityRegistry(EngineType &engine) : engine(engine) {
-    }
-
-    std::size_t size() {
-        return entities.size();
-    }
-
-    EntityType &operator[](int index) {
-        int size = entities.size();
-        return index < size ? entities[index] : created[index - size];
-    }
-
-    EntityType &create() {
-        created.emplace_back(entities.size() + created.size());
-        return created.back();
-    }
-
-    void flush() {
-        std::move(created.begin(), created.end(), std::back_inserter(entities));
-        created.clear();
-    }
-
-  private:
-    EngineType &engine;
-    std::vector<EntityType> entities;
-    std::vector<EntityType> created;
 };
 
 }

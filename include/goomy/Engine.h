@@ -2,6 +2,7 @@
 
 #include "goomy/EngineBase.h"
 #include "goomy/Entity.h"
+#include "goomy/Registry.h"
 #include "goomy/Signal.h"
 #include "goomy/System.h"
 
@@ -17,10 +18,8 @@ struct Mount {
 
 template <typename... ComponentTypes>
 struct Components {
-    using entityType = Entity<ComponentTypes...>;
-
-    template <typename EngineType>
-    using entityRegistryType = EntityRegistry<EngineType, entityType>;
+    using entityType = RegistryItem<Entity<ComponentTypes...>>;
+    using entityRegistryType = Registry<entityType>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
@@ -33,10 +32,9 @@ class Engine : public EngineBase {
         typename MountedSystems::template signalDispatcherType<engineType>;
 
     using entityType = typename DeclaredComponents::entityType;
-    using entityRegistryType =
-        typename DeclaredComponents::template entityRegistryType<engineType>;
+    using entityRegistryType = typename DeclaredComponents::entityRegistryType;
 
-    Engine() : signalDispatcher(*this), entityRegistry(*this) {
+    Engine() : signalDispatcher(*this) {
     }
 
     // Disallow copy
@@ -55,11 +53,15 @@ class Engine : public EngineBase {
     }
 
     entityType &getEntity(int index) {
-        return entityRegistry[index];
+        return entityRegistry.get(index);
     }
 
     entityType &createEntity() {
         return entityRegistry.create();
+    }
+
+    void destroyEntity(entityType &entity) {
+        entityRegistry.destroy(entity);
     }
 
     void loop() {

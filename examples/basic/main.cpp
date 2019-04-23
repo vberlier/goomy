@@ -42,25 +42,27 @@ void FooSystem::onUpdate(Engine &engine) {
 
     if (settings.difficulty == Difficulty::easy) {
         std::cout << "Do something easy" << std::endl;
+        settings.difficulty = Difficulty::hard;
     } else {
         std::cout << "Do something hard" << std::endl;
+        settings.difficulty = Difficulty::easy;
     }
 
     auto &foo = engine.createEntity();
-    std::cout << "Created foo: " << foo.index << std::endl;
+    std::cout << "Created foo: " << foo.getIndex() << std::endl;
 
     foo.set<Transform>(engine.entityCount() + 42);
     std::cout << "Foo transform: "
-              << engine.getEntity(foo.index).get<Transform>() << std::endl;
+              << engine.getEntity(foo.getIndex()).get<Transform>() << std::endl;
 
     std::cout << "All entities:" << std::endl;
 
     for (int i = 0; i < engine.entityCount(); ++i) {
-        std::cout << engine.getEntity(i).index << " has transform "
+        std::cout << engine.getEntity(i).getIndex() << " has transform "
                   << engine.getEntity(i).get<Transform>() << std::endl;
     }
 
-    std::cout << "Foo index: " << engine.getEntity(engine.entityCount()).index
+    std::cout << "Foo index: " << engine.getEntity(engine.entityCount()).getIndex()
               << std::endl;
 }
 
