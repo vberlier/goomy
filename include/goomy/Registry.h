@@ -13,7 +13,7 @@ class RegistryItem : public BaseType {
     using indexType = IndexType;
 
     template <typename... Args>
-    RegistryItem(indexType index, Args... args)
+    explicit RegistryItem(indexType index, Args... args)
         : registryIndex(index), baseType(std::forward<Args>(args)...) {
     }
 
