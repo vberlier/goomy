@@ -10,10 +10,8 @@ namespace goomy {
 
 template <typename... SystemTypes>
 struct Mount {
-    using containerType = SystemContainer<SystemTypes...>;
-
     template <typename EngineType>
-    using signalDispatcherType = SignalDispatcher<EngineType, SystemTypes...>;
+    using systemManagerType = SystemManager<EngineType, SystemTypes...>;
 };
 
 template <typename... ComponentTypes>
@@ -27,14 +25,13 @@ class Engine : public EngineBase {
   public:
     using engineType = Engine<MountedSystems, DeclaredComponents>;
 
-    using systemContainerType = typename MountedSystems::containerType;
-    using signalDispatcherType =
-        typename MountedSystems::template signalDispatcherType<engineType>;
+    using systemManagerType =
+        typename MountedSystems::template systemManagerType<engineType>;
 
     using entityType = typename DeclaredComponents::entityType;
     using entityRegistryType = typename DeclaredComponents::entityRegistryType;
 
-    Engine() : signalDispatcher(*this) {
+    Engine() : systemManager(*this) {
     }
 
     // Disallow copy
@@ -42,13 +39,13 @@ class Engine : public EngineBase {
     void operator=(const Engine &engine) = delete;
 
     template <typename SystemType>
-    System<SystemType> &get() {
-        return systems.template get<SystemType>();
+    auto &get() {
+        return systemManager.template get<SystemType>();
     }
 
     template <typename SignalType, typename... Args>
     void dispatch(Args &&... args) {
-        signalDispatcher.template dispatch<SignalType>(
+        systemManager.template dispatch<SignalType>(
             std::forward<Args>(args)...);
     }
 
@@ -67,11 +64,11 @@ class Engine : public EngineBase {
     void loop() {
         start();
 
-        signalDispatcher.init();
+        systemManager.init();
 
         while (isRunning()) {
             frameTick();
-            signalDispatcher.update();
+            systemManager.update();
             entityRegistry.flush();
         }
     }
@@ -81,8 +78,7 @@ class Engine : public EngineBase {
     }
 
   private:
-    systemContainerType systems;
-    signalDispatcherType signalDispatcher;
+    systemManagerType systemManager;
     entityRegistryType entityRegistry;
 };
 
