@@ -2,8 +2,6 @@
 
 #include "goomy/EngineBase.h"
 #include "goomy/Entity.h"
-#include "goomy/Registry.h"
-#include "goomy/Signal.h"
 #include "goomy/System.h"
 
 namespace goomy {
@@ -16,8 +14,7 @@ struct Mount {
 
 template <typename... ComponentTypes>
 struct Components {
-    using entityType = RegistryItem<Entity<ComponentTypes...>>;
-    using entityRegistryType = Registry<entityType>;
+    using entityManagerType = EntityManager<ComponentTypes...>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
@@ -28,8 +25,7 @@ class Engine : public EngineBase {
     using systemManagerType =
         typename MountedSystems::template systemManagerType<engineType>;
 
-    using entityType = typename DeclaredComponents::entityType;
-    using entityRegistryType = typename DeclaredComponents::entityRegistryType;
+    using entityManagerType = typename DeclaredComponents::entityManagerType;
 
     Engine() : systemManager(*this) {
     }
@@ -49,16 +45,16 @@ class Engine : public EngineBase {
             std::forward<Args>(args)...);
     }
 
-    entityType &getEntity(int index) {
-        return entityRegistry.get(index);
+    auto &getEntity(typename entityManagerType::registryIndexType index) {
+        return entityManager.getEntity(index);
     }
 
-    entityType &createEntity() {
-        return entityRegistry.create();
+    auto &createEntity() {
+        return entityManager.createEntity();
     }
 
-    void destroyEntity(entityType &entity) {
-        entityRegistry.destroy(entity);
+    void destroyEntity(typename entityManagerType::entityType &entity) {
+        entityManager.destroyEntity(entity);
     }
 
     void loop() {
@@ -69,17 +65,17 @@ class Engine : public EngineBase {
         while (isRunning()) {
             frameTick();
             systemManager.update();
-            entityRegistry.flush();
+            entityManager.update();
         }
     }
 
     std::size_t entityCount() {
-        return entityRegistry.size();
+        return entityManager.entityCount();
     }
 
   private:
     systemManagerType systemManager;
-    entityRegistryType entityRegistry;
+    entityManagerType entityManager;
 };
 
 }

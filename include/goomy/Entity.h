@@ -1,5 +1,6 @@
 #pragma once
 
+#include "goomy/Registry.h"
 #include <algorithm>
 #include <type_traits>
 #include <vector>
@@ -37,6 +38,36 @@ class Entity : public ComponentIndices<Ts...> {
     bool has() {
         return ComponentIndices<Ts...>::template get<T>() >= 0;
     }
+};
+
+template <typename... ComponentTypes>
+class EntityManager {
+  public:
+    using entityType = RegistryItem<Entity<ComponentTypes...>>;
+    using registryIndexType = typename entityType::indexType;
+
+    auto &getEntity(registryIndexType index) {
+        return registry.get(index);
+    }
+
+    auto &createEntity() {
+        return registry.create();
+    }
+
+    void destroyEntity(entityType &entity) {
+        registry.destroy(entity);
+    }
+
+    void update() {
+        registry.flush();
+    }
+
+    std::size_t entityCount() {
+        return registry.size();
+    }
+
+  private:
+    Registry<entityType> registry;
 };
 
 }
