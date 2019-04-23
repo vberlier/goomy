@@ -28,18 +28,23 @@ void Overlay::onClick(Engine &engine, sf::Event &event) {
     lastClickedX = event.mouseButton.x;
     lastClickedY = event.mouseButton.y;
 
-    auto &entity = engine.createEntity();
+    auto &entityManager = engine.getEntityManager();
 
-    if (engine.entityCount() % 5 == 4) {
+    auto &entity = entityManager.createEntity();
+
+    if (entityManager.getEntityCount() % 5 == 4) {
         entity.set<Dummy>(duration_cast<seconds>(engine.getAge()).count());
 
-        for (int i = engine.entityCount() - 3; i < engine.entityCount(); ++i) {
-            engine.destroyEntity(engine.getEntity(i));
+        for (int i = entityManager.getEntityCount() - 3;
+             i < entityManager.getEntityCount(); ++i) {
+            entityManager.destroyEntity(entityManager.getEntity(i));
         }
     }
 }
 
 std::string Overlay::getString(Engine &engine) {
+    auto &entityManager = engine.getEntityManager();
+
     auto elapsed = duration_cast<seconds>(engine.getAge()).count();
 
     auto frameDuration =
@@ -55,12 +60,11 @@ std::string Overlay::getString(Engine &engine) {
                   "\n" + "Mouse position: " + std::to_string(mouseX) + " " +
                   std::to_string(mouseY) + "\n" +
                   "Last click: " + std::to_string(lastClickedX) + " " +
-                  std::to_string(lastClickedY) + "\n" +
-                  "Entity count: " + std::to_string(engine.entityCount()) +
-                  "\n";
+                  std::to_string(lastClickedY) + "\n" + "Entity count: " +
+                  std::to_string(entityManager.getEntityCount()) + "\n";
 
-    for (int i = 0; i < engine.entityCount(); ++i) {
-        auto &entity = engine.getEntity(i);
+    for (int i = 0; i < entityManager.getEntityCount(); ++i) {
+        auto &entity = entityManager.getEntity(i);
         result += "\n Entity #" + std::to_string(entity.getIndex()) +
                   " with dummy " + std::to_string(entity.get<Dummy>());
     }

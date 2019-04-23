@@ -38,6 +38,8 @@ void FooSystem::onInit() {
 }
 
 void FooSystem::onUpdate(Engine &engine) {
+    auto &entityManager = engine.getEntityManager();
+
     auto &settings = engine.get<Settings>();
 
     if (settings.difficulty == Difficulty::easy) {
@@ -48,27 +50,32 @@ void FooSystem::onUpdate(Engine &engine) {
         settings.difficulty = Difficulty::easy;
     }
 
-    auto &foo = engine.createEntity();
+    auto &foo = entityManager.createEntity();
     std::cout << "Created foo: " << foo.getIndex() << std::endl;
 
-    foo.set<Transform>(engine.entityCount() + 42);
+    foo.set<Transform>(entityManager.getEntityCount() + 42);
     std::cout << "Foo transform: "
-              << engine.getEntity(foo.getIndex()).get<Transform>() << std::endl;
+              << entityManager.getEntity(foo.getIndex()).get<Transform>()
+              << std::endl;
 
     std::cout << "All entities:" << std::endl;
 
-    for (int i = 0; i < engine.entityCount(); ++i) {
-        std::cout << engine.getEntity(i).getIndex() << " has transform "
-                  << engine.getEntity(i).get<Transform>() << std::endl;
+    for (int i = 0; i < entityManager.getEntityCount(); ++i) {
+        std::cout << entityManager.getEntity(i).getIndex() << " has transform "
+                  << entityManager.getEntity(i).get<Transform>() << std::endl;
     }
 
-    std::cout << "Foo index: " << engine.getEntity(engine.entityCount()).getIndex()
-              << std::endl;
+    std::cout
+        << "Foo index: "
+        << entityManager.getEntity(entityManager.getEntityCount()).getIndex()
+        << std::endl;
 }
 
 void BarSystem::onBeforeUpdate(Engine &engine) {
+    auto &entityManager = engine.getEntityManager();
+
     std::cout << "-> Frame " << frame << std::endl;
-    std::cout << "Entity count " << engine.entityCount() << std::endl;
+    std::cout << "Entity count " << entityManager.getEntityCount() << std::endl;
 
     if (frame >= 5) {
         std::cout << "Shutting down" << std::endl;

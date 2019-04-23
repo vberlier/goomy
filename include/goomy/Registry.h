@@ -43,7 +43,7 @@ class Registry {
     using indexType = typename T::indexType;
 
     T &get(indexType index) {
-        std::size_t size = items.size();
+        auto size = items.size();
         return index < size ? items[index] : created[index - size];
     }
 
@@ -72,7 +72,15 @@ class Registry {
         destroyed.clear();
     }
 
-    std::size_t size() {
+    auto begin() const {
+        return items.begin();
+    }
+
+    auto end() const {
+        return items.end();
+    }
+
+    std::size_t size() const {
         return items.size();
     }
 

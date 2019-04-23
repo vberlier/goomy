@@ -43,8 +43,15 @@ class Entity : public ComponentIndices<Ts...> {
 template <typename... ComponentTypes>
 class EntityManager {
   public:
+    using entityManagerType = EntityManager<ComponentTypes...>;
     using entityType = RegistryItem<Entity<ComponentTypes...>>;
     using registryIndexType = typename entityType::indexType;
+
+    EntityManager() = default;
+
+    // Disallow copy
+    EntityManager(const entityManagerType &engine) = delete;
+    void operator=(const entityManagerType &engine) = delete;
 
     auto &getEntity(registryIndexType index) {
         return registry.get(index);
@@ -62,7 +69,7 @@ class EntityManager {
         registry.flush();
     }
 
-    std::size_t entityCount() {
+    std::size_t getEntityCount() const {
         return registry.size();
     }
 

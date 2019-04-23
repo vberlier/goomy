@@ -31,8 +31,8 @@ class Engine : public EngineBase {
     }
 
     // Disallow copy
-    Engine(const Engine &engine) = delete;
-    void operator=(const Engine &engine) = delete;
+    Engine(const engineType &engine) = delete;
+    void operator=(const engineType &engine) = delete;
 
     template <typename SystemType>
     auto &get() {
@@ -45,16 +45,8 @@ class Engine : public EngineBase {
             std::forward<Args>(args)...);
     }
 
-    auto &getEntity(typename entityManagerType::registryIndexType index) {
-        return entityManager.getEntity(index);
-    }
-
-    auto &createEntity() {
-        return entityManager.createEntity();
-    }
-
-    void destroyEntity(typename entityManagerType::entityType &entity) {
-        entityManager.destroyEntity(entity);
+    auto &getEntityManager() {
+        return entityManager;
     }
 
     void loop() {
@@ -67,10 +59,6 @@ class Engine : public EngineBase {
             systemManager.update();
             entityManager.flush();
         }
-    }
-
-    std::size_t entityCount() {
-        return entityManager.entityCount();
     }
 
   private:
