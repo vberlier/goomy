@@ -1,5 +1,6 @@
 #pragma once
 
+#include "goomy/Component.h"
 #include "goomy/Engine.h"
 #include "goomy/EngineBase.h"
 #include "goomy/Entity.h"

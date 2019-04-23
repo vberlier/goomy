@@ -5,12 +5,20 @@ class Settings;
 class FooSystem;
 class BarSystem;
 
-class Transform;
-class Collider;
-class Renderer;
+struct Testing {
+    int frame;
 
-using Engine = goomy::Engine<goomy::Mount<Settings, FooSystem, BarSystem>,
-                             goomy::Components<Transform, Collider, Renderer>>;
+    explicit Testing(int frame) : frame(frame) {
+    }
+};
+
+class Transform {};
+class Collider {};
+class Renderer {};
+
+using Engine =
+    goomy::Engine<goomy::Mount<Settings, FooSystem, BarSystem>,
+                  goomy::Components<Testing, Transform, Collider, Renderer>>;
 
 enum class Difficulty { easy, hard };
 
@@ -27,10 +35,9 @@ class FooSystem {
 
 class BarSystem {
   public:
-    void onBeforeUpdate(Engine &engine);
-
-  private:
     int frame = 0;
+
+    void onBeforeUpdate(Engine &engine);
 };
 
 void FooSystem::onInit() {
@@ -53,16 +60,20 @@ void FooSystem::onUpdate(Engine &engine) {
     auto &foo = entityManager.createEntity();
     std::cout << "Created foo: " << foo.getIndex() << std::endl;
 
-    foo.set<Transform>(entityManager.getEntityCount() + 42);
+    entityManager.createComponent<Testing>(foo, engine.get<BarSystem>().frame);
     std::cout << "Foo transform: "
-              << entityManager.getEntity(foo.getIndex()).get<Transform>()
+              << entityManager.getEntity(foo.getIndex()).get<Testing>()
               << std::endl;
 
     std::cout << "All entities:" << std::endl;
 
     for (int i = 0; i < entityManager.getEntityCount(); ++i) {
-        std::cout << entityManager.getEntity(i).getIndex() << " has transform "
-                  << entityManager.getEntity(i).get<Transform>() << std::endl;
+        std::cout << entityManager.getEntity(i).getIndex() << " has component "
+                  << entityManager.getEntity(i).get<Testing>() << " ("
+                  << entityManager
+                         .getComponent<Testing>(entityManager.getEntity(i))
+                         .frame
+                  << ")" << std::endl;
     }
 
     std::cout
@@ -77,7 +88,11 @@ void BarSystem::onBeforeUpdate(Engine &engine) {
     std::cout << "-> Frame " << frame << std::endl;
     std::cout << "Entity count " << entityManager.getEntityCount() << std::endl;
 
-    if (frame >= 5) {
+    if (frame == 4) {
+        entityManager.destroyEntity(entityManager.getEntity(2));
+    }
+
+    if (frame >= 7) {
         std::cout << "Shutting down" << std::endl;
         engine.shutdown();
     }

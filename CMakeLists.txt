@@ -4,6 +4,7 @@ project(goomy)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(${PROJECT_NAME}
+        include/goomy/Component.h
         include/goomy/Engine.h
         include/goomy/EngineBase.h
         src/EngineBase.cpp

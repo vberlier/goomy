@@ -13,7 +13,7 @@ class RegistryItem : public BaseType {
     using indexType = IndexType;
 
     template <typename... Args>
-    explicit RegistryItem(indexType index, Args... args)
+    explicit RegistryItem(indexType index, Args &&... args)
         : registryIndex(index), baseType(std::forward<Args>(args)...) {
     }
 
@@ -40,15 +40,24 @@ class RegistryItem : public BaseType {
 template <typename T>
 class Registry {
   public:
+    using registryType = Registry<T>;
     using indexType = typename T::indexType;
+
+    Registry() = default;
+
+    // Disallow copy
+    Registry(const registryType &registry) = delete;
+    void operator=(const registryType &registry) = delete;
 
     T &get(indexType index) {
         auto size = items.size();
         return index < size ? items[index] : created[index - size];
     }
 
-    T &create() {
-        return created.emplace_back(items.size() + created.size());
+    template <typename... Args>
+    T &create(Args &&... args) {
+        return created.emplace_back(items.size() + created.size(),
+                                    std::forward<Args>(args)...);
     }
 
     void destroy(T &item) {
@@ -57,7 +66,6 @@ class Registry {
 
     void flush() {
         std::move(created.begin(), created.end(), std::back_inserter(items));
-        created.clear();
 
         for (auto it = destroyed.rbegin(); it != destroyed.rend(); it++) {
             auto index = *it;
@@ -68,7 +76,10 @@ class Registry {
             items[index] = std::move(back);
             items.pop_back();
         }
+    }
 
+    void reset() {
+        created.clear();
         destroyed.clear();
     }
 
@@ -78,6 +89,22 @@ class Registry {
 
     auto end() const {
         return items.end();
+    }
+
+    auto createdBegin() const {
+        return created.begin();
+    }
+
+    auto createdEnd() const {
+        return created.end();
+    }
+
+    auto destroyedBegin() const {
+        return destroyed.begin();
+    }
+
+    auto destroyedEnd() const {
+        return destroyed.end();
     }
 
     std::size_t size() const {

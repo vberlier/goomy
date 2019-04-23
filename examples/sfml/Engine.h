@@ -6,7 +6,12 @@ class Overlay;
 class ResourceManager;
 class Window;
 
-class Dummy;
+struct Dummy {
+    int x;
+    int y;
+
+    Dummy(int x, int y) : x(x), y(y) {}
+};
 
 using Engine =
     goomy::Engine<goomy::Mount<Overlay, ResourceManager, Window>,

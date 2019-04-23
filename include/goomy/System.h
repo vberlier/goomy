@@ -25,7 +25,7 @@ struct SystemContainer : SystemContainer<T>, SystemContainer<Ts...> {
 template <typename T>
 struct SystemContainer<T> {
     template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
-    System<U> &get() {
+    auto &get() {
         return instance;
     }
 
@@ -48,10 +48,10 @@ class SystemManager {
     void dispatch(Args &&... args) {
         (invoke<SignalType>(engine.template get<SystemTypes>(),
                             std::forward<Args>(args)...),
-            ...);
+         ...);
         (invoke<SignalType>(engine.template get<SystemTypes>(), engine,
                             std::forward<Args>(args)...),
-            ...);
+         ...);
     }
 
     void init() {

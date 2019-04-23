@@ -12,11 +12,30 @@ void Overlay::onUpdate(Engine &engine) {
     auto &window = engine.get<Window>();
     auto &resourceManager = engine.get<ResourceManager>();
 
+    sf::Color green(100, 250, 50);
+
     sf::Text text(getString(engine), resourceManager.getDefaultFont());
-    text.setFillColor(sf::Color(100, 250, 50));
+    text.setFillColor(green);
     text.setCharacterSize(16);
 
     window.draw(text);
+
+    auto &entityManager = engine.getEntityManager();
+
+    for (int i = 0; i < entityManager.getEntityCount(); ++i) {
+        auto &entity = entityManager.getEntity(i);
+
+        if (entity.has<Dummy>()) {
+            auto &dummy = entityManager.getComponent<Dummy>(entity);
+
+            sf::CircleShape circle(4);
+            circle.setFillColor(green);
+            circle.setPosition(dummy.x - circle.getRadius(),
+                               dummy.y - circle.getRadius());
+
+            window.draw(circle);
+        }
+    }
 }
 
 void Overlay::onMouseMove(Engine &engine, sf::Event &event) {
@@ -32,13 +51,23 @@ void Overlay::onClick(Engine &engine, sf::Event &event) {
 
     auto &entity = entityManager.createEntity();
 
-    if (entityManager.getEntityCount() % 5 == 4) {
-        entity.set<Dummy>(duration_cast<seconds>(engine.getAge()).count());
+    if (entityManager.getEntityCount() > 12) {
+        for (int i = 1; i < 8; ++i) {
+            auto &e = entityManager.getEntity(i);
 
-        for (int i = entityManager.getEntityCount() - 3;
-             i < entityManager.getEntityCount(); ++i) {
+            if (e.has<Dummy>()) {
+                entityManager.destroyComponent<Dummy>(e);
+            }
+        }
+    }
+
+    if (entityManager.getEntityCount() > 24) {
+        for (int i = 3; i < entityManager.getEntityCount() - 2; ++i) {
             entityManager.destroyEntity(entityManager.getEntity(i));
         }
+    } else {
+        entityManager.createComponent<Dummy>(entity, lastClickedX,
+                                             lastClickedY);
     }
 }
 

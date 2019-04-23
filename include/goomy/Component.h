@@ -1,0 +1,49 @@
+#pragma once
+
+#include "goomy/Registry.h"
+
+namespace goomy {
+
+template <typename EntityType, typename ComponentType>
+class Component : public ComponentType {
+  public:
+    using entityIndexType = typename EntityType::indexType;
+    using componentType = ComponentType;
+
+    template <typename... Args>
+    explicit Component(entityIndexType index, Args &&... args)
+        : entityIndex(index), componentType(std::forward<Args>(args)...) {
+    }
+
+    auto getEntityIndex() const {
+        return entityIndex;
+    }
+
+    void setEntityIndex(entityIndexType index) {
+        entityIndex = index;
+    }
+
+  private:
+    entityIndexType entityIndex;
+};
+
+template <typename EntityType, typename T, typename... Ts>
+struct ComponentRegistryContainer
+    : ComponentRegistryContainer<EntityType, T>,
+      ComponentRegistryContainer<EntityType, Ts...> {
+    using ComponentRegistryContainer<EntityType, T>::get;
+    using ComponentRegistryContainer<EntityType, Ts...>::get;
+};
+
+template <typename EntityType, typename T>
+struct ComponentRegistryContainer<EntityType, T> {
+    template <typename U, typename = std::enable_if_t<std::is_same<T, U>{}>>
+    auto &get() {
+        return registry;
+    }
+
+  private:
+    Registry<RegistryItem<Component<EntityType, T>>> registry;
+};
+
+}
