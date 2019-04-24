@@ -20,21 +20,13 @@ void Overlay::onUpdate(Engine &engine) {
 
     window.draw(text);
 
-    auto &entityManager = engine.getEntityManager();
+    for (auto dummy : engine.components<Dummy>()) {
+        sf::CircleShape circle(4);
+        circle.setFillColor(green);
+        circle.setPosition(dummy.data().x - circle.getRadius(),
+                           dummy.data().y - circle.getRadius());
 
-    for (int i = 0; i < entityManager.getEntityCount(); ++i) {
-        auto &entity = entityManager.getEntity(i);
-
-        if (entity.has<Dummy>()) {
-            auto &dummy = entityManager.getComponent<Dummy>(entity);
-
-            sf::CircleShape circle(4);
-            circle.setFillColor(green);
-            circle.setPosition(dummy.x - circle.getRadius(),
-                               dummy.y - circle.getRadius());
-
-            window.draw(circle);
-        }
+        window.draw(circle);
     }
 }
 
@@ -47,16 +39,10 @@ void Overlay::onClick(Engine &engine, sf::Event &event) {
     lastClickedX = event.mouseButton.x;
     lastClickedY = event.mouseButton.y;
 
-    auto &entityManager = engine.getEntityManager();
-
-    auto &entity = entityManager.createEntity();
-    entityManager.createComponent<Dummy>(entity, lastClickedX, lastClickedY);
-    entityManager.createComponent<Age>(entity, 10000);
+    engine.entity().with<Dummy>(lastClickedX, lastClickedY).with<Age>(10000);
 }
 
 std::string Overlay::getString(Engine &engine) {
-    auto &entityManager = engine.getEntityManager();
-
     auto elapsed = duration_cast<seconds>(engine.getAge()).count();
 
     auto frameDuration =
@@ -73,18 +59,17 @@ std::string Overlay::getString(Engine &engine) {
                   std::to_string(mouseY) + "\n" +
                   "Last click: " + std::to_string(lastClickedX) + " " +
                   std::to_string(lastClickedY) + "\n" + "Entity count: " +
-                  std::to_string(entityManager.getEntityCount()) + "\n";
+                  std::to_string(engine.getEntityCount()) + "\n";
 
-    for (int i = 0; i < entityManager.getEntityCount(); ++i) {
-        auto &entity = entityManager.getEntity(i);
-        auto &dummy = entityManager.getComponent<Dummy>(entity);
-        auto &age = entityManager.getComponent<Age>(entity);
+    for (auto entity : engine.entities()) {
+        auto dummy = entity.get<Dummy>();
+        auto age = entity.get<Age>();
 
-        result += "\n Entity #" + std::to_string(entity.getIndex()) +
-                  " with dummy " + std::to_string(entity.get<Dummy>()) + " (" +
-                  std::to_string(dummy.x) + ", " + std::to_string(dummy.y) +
-                  ") and age " + std::to_string(entity.get<Age>()) + ": " +
-                  std::to_string(age.age);
+        result +=
+            "\n Entity #" + std::to_string(entity.id()) + " with dummy " +
+            std::to_string(dummy.id()) + " (" + std::to_string(dummy.data().x) +
+            ", " + std::to_string(dummy.data().y) + ") and age " +
+            std::to_string(age.id()) + ": " + std::to_string(age.data().age);
     }
 
     return result;

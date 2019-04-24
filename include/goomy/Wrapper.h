@@ -2,6 +2,68 @@
 
 namespace goomy {
 
+namespace internal {
+
+template <typename EngineType, typename T>
+class Iterator : public std::iterator<std::input_iterator_tag, T> {
+    using indexType = typename EngineType::entityManagerType::registryIndexType;
+    using iteratorType = Iterator<EngineType, T>;
+
+  public:
+    Iterator(EngineType &engine, indexType index)
+        : engine(engine), index(index) {
+    }
+
+    iteratorType &operator++() {
+        index++;
+        return *this;
+    }
+
+    iteratorType operator++(int) {
+        return iteratorType(engine, index + 1);
+    }
+
+    bool operator==(iteratorType other) const {
+        return index == other.index;
+    }
+
+    bool operator!=(iteratorType other) const {
+        return !(*this == other);
+    }
+
+    auto operator*() const {
+        return T::find(engine, index);
+    }
+
+  private:
+    EngineType &engine;
+    indexType index;
+};
+
+template <typename EngineType, typename T>
+class Range {
+    using iterator = Iterator<EngineType, T>;
+    using indexType = typename EngineType::indexType;
+
+  public:
+    Range(EngineType &engine, indexType end) : engine(engine), endIndex(end) {
+    }
+
+    iterator begin() {
+        return iterator(engine, 0);
+    }
+
+    iterator end() {
+        return iterator(engine, endIndex);
+    }
+
+  private:
+    EngineType &engine;
+    indexType endIndex;
+};
+
+} // namespace internal
+
 template <typename EngineType>
 class Entity;
 
@@ -39,6 +101,14 @@ class Component {
             .template destroyComponent<ComponentType>(
                 engineReference.getEntityManager().getEntity(
                     component.getEntityIndex()));
+    }
+
+    static auto
+    find(EngineType &engine,
+         typename EngineType::entityManagerType::registryIndexType index) {
+        return Component(engine, engine.getEntityManager()
+            .getComponentRegistries().template get<ComponentType>()
+            .get(index));
     }
 
   private:
@@ -90,6 +160,12 @@ class Entity {
 
     void destroy() {
         engineReference.getEntityManager().destroyEntity(entity);
+    }
+
+    static auto
+    find(EngineType &engine,
+         typename EngineType::entityManagerType::registryIndexType index) {
+        return engine.entity(index);
     }
 
   private:

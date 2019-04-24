@@ -39,6 +39,8 @@ class Engine : public internal::EngineBase {
         typename DeclaredComponents::template signalDispatcherType<
             systemManagerType>;
 
+    using indexType = typename entityManagerType::registryIndexType;
+
     Engine()
         : systemManager(*this), signalDispatcher(systemManager, entityManager) {
     }
@@ -62,8 +64,26 @@ class Engine : public internal::EngineBase {
         return Entity(*this, entityManager.createEntity());
     }
 
-    auto entity(typename entityManagerType::registryIndexType index) {
+    auto entity(indexType index) {
         return Entity(*this, entityManager.getEntity(index));
+    }
+
+    auto entities() {
+        return internal::Range<engineType, Entity<engineType>>(
+            *this, entityManager.getEntityCount());
+    }
+
+    auto getEntityCount() {
+        return entityManager.getEntityCount();
+    }
+
+    template <typename ComponentType>
+    auto components() {
+        return internal::Range<engineType,
+                               Component<engineType, ComponentType>>(
+            *this, entityManager.getComponentRegistries()
+                       .template get<ComponentType>()
+                       .size());
     }
 
     auto &getEntityManager() {
