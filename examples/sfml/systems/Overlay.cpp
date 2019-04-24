@@ -12,22 +12,11 @@ void Overlay::onUpdate(Engine &engine) {
     auto &window = engine.get<Window>();
     auto &resourceManager = engine.get<ResourceManager>();
 
-    sf::Color green(100, 250, 50);
-
     sf::Text text(getString(engine), resourceManager.getDefaultFont());
-    text.setFillColor(green);
+    text.setFillColor(color);
     text.setCharacterSize(16);
 
     window.draw(text);
-
-    for (auto dummy : engine.components<Dummy>()) {
-        sf::CircleShape circle(4);
-        circle.setFillColor(green);
-        circle.setPosition(dummy.data().x - circle.getRadius(),
-                           dummy.data().y - circle.getRadius());
-
-        window.draw(circle);
-    }
 }
 
 void Overlay::onMouseMove(Engine &engine, sf::Event &event) {
@@ -38,10 +27,6 @@ void Overlay::onMouseMove(Engine &engine, sf::Event &event) {
 void Overlay::onClick(Engine &engine, sf::Event &event) {
     lastClickedX = event.mouseButton.x;
     lastClickedY = event.mouseButton.y;
-
-    engine.entity()
-        .with<Dummy>(lastClickedX, lastClickedY)
-        .with<Age>(std::chrono::seconds(3));
 }
 
 std::string Overlay::getString(Engine &engine) {

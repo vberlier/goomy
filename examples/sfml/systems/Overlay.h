@@ -8,6 +8,8 @@ class Overlay {
   public:
     Overlay();
 
+    const sf::Color color{100, 250, 50};
+
     void onUpdate(Engine &engine);
     void onMouseMove(Engine &engine, sf::Event &event);
     void onClick(Engine &engine, sf::Event &event);

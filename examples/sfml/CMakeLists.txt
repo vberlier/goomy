@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME}
         systems/AgeSystem.h
         systems/Overlay.cpp
         systems/Overlay.h
+        systems/ParticleSystem.cpp
+        systems/ParticleSystem.h
         systems/ResourceManager.cpp
         systems/ResourceManager.h
         systems/Window.cpp
