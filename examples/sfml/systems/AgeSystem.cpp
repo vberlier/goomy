@@ -2,9 +2,9 @@
 
 void AgeSystem::onUpdate(Engine &engine, goomy::Component<Engine, Age> age) {
     auto &data = age.data();
-    data.age++;
+    data.age += engine.getFrameDuration();
 
-    if (data.maxAge >= 0 && data.age >= data.maxAge) {
+    if (data.maxAge && data.age > data.maxAge.value()) {
         age.entity().destroy();
     }
 }

@@ -3,13 +3,14 @@
 #include "Engine.h"
 
 struct Age {
-    int age = 0;
-    int maxAge;
+    goomy::clock::duration age = goomy::clock::duration(0);
+    std::optional<goomy::clock::duration> maxAge;
 
-    Age() : Age(-1) {
+    Age() : maxAge(std::nullopt) {
     }
 
-    explicit Age(int maxAge) : maxAge(maxAge) {
+    explicit Age(goomy::clock::duration maxAge)
+        : maxAge(std::optional(maxAge)) {
     }
 };
 

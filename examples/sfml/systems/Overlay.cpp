@@ -39,7 +39,9 @@ void Overlay::onClick(Engine &engine, sf::Event &event) {
     lastClickedX = event.mouseButton.x;
     lastClickedY = event.mouseButton.y;
 
-    engine.entity().with<Dummy>(lastClickedX, lastClickedY).with<Age>(10000);
+    engine.entity()
+        .with<Dummy>(lastClickedX, lastClickedY)
+        .with<Age>(std::chrono::seconds(3));
 }
 
 std::string Overlay::getString(Engine &engine) {
@@ -57,17 +59,6 @@ std::string Overlay::getString(Engine &engine) {
         "Last click: " + std::to_string(lastClickedX) + " " +
         std::to_string(lastClickedY) + "\n" +
         "Entity count: " + std::to_string(engine.getEntityCount()) + "\n";
-
-    for (auto entity : engine.entities()) {
-        auto dummy = entity.get<Dummy>();
-        auto age = entity.get<Age>();
-
-        result +=
-            "\n Entity #" + std::to_string(entity.id()) + " with dummy " +
-            std::to_string(dummy.id()) + " (" + std::to_string(dummy.data().x) +
-            ", " + std::to_string(dummy.data().y) + ") and age " +
-            std::to_string(age.id()) + ": " + std::to_string(age.data().age);
-    }
 
     return result;
 }
