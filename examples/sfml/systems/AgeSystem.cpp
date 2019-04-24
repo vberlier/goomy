@@ -1,10 +1,10 @@
 #include "main.h"
 
-void AgeSystem::onUpdate(Engine &engine, Age &age) {
-    age.age++;
+void AgeSystem::onUpdate(Engine &engine, goomy::Component<Engine, Age> age) {
+    auto &data = age.data();
+    data.age++;
 
-    if (age.maxAge >= 0 && age.age >= age.maxAge) {
-        auto &entityManager = engine.getEntityManager();
-        entityManager.destroyEntity(entityManager.getEntity(age));
+    if (data.maxAge >= 0 && data.age >= data.maxAge) {
+        age.entity().destroy();
     }
 }

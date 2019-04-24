@@ -15,5 +15,5 @@ struct Age {
 
 class AgeSystem {
   public:
-    void onUpdate(Engine &engine, Age &age);
+    void onUpdate(Engine &engine, goomy::Component<Engine, Age> age);
 };

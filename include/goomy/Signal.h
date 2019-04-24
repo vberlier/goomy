@@ -52,19 +52,19 @@ struct Signal {
     }
 };
 
-template <typename SystemManagerType, typename EntityManagerType,
+template <typename EngineType, typename SystemManagerType,
           typename... ComponentTypes>
 class SignalDispatcher {
   public:
-    SignalDispatcher(SystemManagerType &systemManager,
-                     EntityManagerType &entityManager)
-        : systemManager(systemManager), entityManager(entityManager) {
+    SignalDispatcher(EngineType &engine, SystemManagerType &systemManager)
+        : engine(engine), systemManager(systemManager) {
     }
 
     template <typename SignalType, typename... Args>
     void dispatch(Args &&... args) {
         systemManager.template dispatch<SignalType>(
             std::forward<Args>(args)...);
+
         (dispatchWithComponent<SignalType, ComponentTypes>(
              std::forward<Args>(args)...),
          ...);
@@ -83,23 +83,17 @@ class SignalDispatcher {
     }
 
   private:
+    EngineType &engine;
     SystemManagerType &systemManager;
-    EntityManagerType &entityManager;
 
     template <typename SignalType, typename ComponentType, typename... Args>
     void dispatchWithComponent(Args &&... args) {
-        auto &registry = entityManager.getComponentRegistries()
-                             .template get<ComponentType>();
-
-        for (auto i = 0; i < registry.size(); i++) {
-            auto &component = registry.get(i);
-
+        for (auto component : engine.template components<ComponentType>()) {
             systemManager.template dispatch<SignalType>(
                 component, std::forward<Args>(args)...);
 
             systemManager.template dispatch<SignalType>(
-                component, entityManager.getEntity(component.getEntityIndex()),
-                std::forward<Args>(args)...);
+                component.data(), std::forward<Args>(args)...);
         }
     }
 };

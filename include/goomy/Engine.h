@@ -19,9 +19,9 @@ template <typename... ComponentTypes>
 struct Register {
     using entityManagerType = internal::EntityManager<ComponentTypes...>;
 
-    template <typename systemManagerType>
+    template <typename EngineType, typename SystemManagerType>
     using signalDispatcherType =
-        internal::SignalDispatcher<systemManagerType, entityManagerType,
+        internal::SignalDispatcher<EngineType, SystemManagerType,
                                    ComponentTypes...>;
 };
 
@@ -37,12 +37,11 @@ class Engine : public internal::EngineBase {
 
     using signalDispatcherType =
         typename DeclaredComponents::template signalDispatcherType<
-            systemManagerType>;
+            engineType, systemManagerType>;
 
     using indexType = typename entityManagerType::registryIndexType;
 
-    Engine()
-        : systemManager(*this), signalDispatcher(systemManager, entityManager) {
+    Engine() : systemManager(*this), signalDispatcher(*this, systemManager) {
     }
 
     // Disallow copy
