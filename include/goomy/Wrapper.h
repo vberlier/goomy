@@ -81,6 +81,12 @@ class Entity {
                                  entity, std::forward<Args>(args)...));
     }
 
+    template <typename ComponentType, typename... Args>
+    auto with(Args &&... args) {
+        create<ComponentType>(std::forward<Args>(args)...);
+        return *this;
+    }
+
     void destroy() {
         engineReference.getEntityManager().destroyEntity(entity);
     }
