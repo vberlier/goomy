@@ -48,18 +48,15 @@ std::string Overlay::getString(Engine &engine) {
     auto frameDuration =
         duration_cast<milliseconds>(engine.getFrameDuration()).count();
 
-    auto framesPerSecond =
-        std::round((float)duration_cast<milliseconds>(seconds(1)).count() /
-                   (float)frameDuration);
-
-    auto result = "Elapsed: " + std::to_string(elapsed) + "s\n" +
-                  "Frame duration: " + std::to_string(frameDuration) + "ms\n" +
-                  "Frames per second: " + std::to_string((int)framesPerSecond) +
-                  "\n" + "Mouse position: " + std::to_string(mouseX) + " " +
-                  std::to_string(mouseY) + "\n" +
-                  "Last click: " + std::to_string(lastClickedX) + " " +
-                  std::to_string(lastClickedY) + "\n" + "Entity count: " +
-                  std::to_string(engine.getEntityCount()) + "\n";
+    auto result =
+        "Elapsed: " + std::to_string(elapsed) + "s\n" +
+        "Frame duration: " + std::to_string(frameDuration) + "ms\n" +
+        "Frames per second: " + std::to_string((int)(1 / engine.deltaTime())) +
+        "\n" + "Mouse position: " + std::to_string(mouseX) + " " +
+        std::to_string(mouseY) + "\n" +
+        "Last click: " + std::to_string(lastClickedX) + " " +
+        std::to_string(lastClickedY) + "\n" +
+        "Entity count: " + std::to_string(engine.getEntityCount()) + "\n";
 
     for (auto entity : engine.entities()) {
         auto dummy = entity.get<Dummy>();
