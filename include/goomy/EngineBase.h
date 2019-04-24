@@ -24,6 +24,7 @@ class EngineBase {
     const clock::time_point &getPreviousFrameTime() const;
     const clock::duration &getFrameDuration() const;
     const clock::duration &getAge() const;
+    const float deltaTime() const;
 
   private:
     bool running;

@@ -47,4 +47,10 @@ const clock::duration &EngineBase::getAge() const {
     return age;
 }
 
+const float EngineBase::deltaTime() const {
+    return std::chrono::duration_cast<std::chrono::duration<float>>(
+               frameDuration)
+        .count();
+}
+
 }
