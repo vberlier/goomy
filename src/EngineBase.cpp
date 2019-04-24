@@ -1,6 +1,6 @@
 #include "goomy/EngineBase.h"
 
-namespace goomy {
+namespace goomy::internal {
 
 EngineBase::EngineBase()
     : running(false), startTime(clock::now()), frameTime(startTime),

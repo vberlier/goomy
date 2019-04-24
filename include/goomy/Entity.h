@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace goomy {
+namespace goomy::internal {
 
 template <typename T, typename... Ts>
 struct ComponentIndices : ComponentIndices<T>, ComponentIndices<Ts...> {
@@ -32,7 +32,7 @@ struct ComponentIndices<T> {
 };
 
 template <typename... Ts>
-class Entity : public ComponentIndices<Ts...> {
+class InternalEntity : public ComponentIndices<Ts...> {
   public:
     template <typename T>
     bool has() {
@@ -44,7 +44,7 @@ template <typename... ComponentTypes>
 class EntityManager {
   public:
     using entityManagerType = EntityManager<ComponentTypes...>;
-    using entityType = RegistryItem<Entity<ComponentTypes...>>;
+    using entityType = RegistryItem<InternalEntity<ComponentTypes...>>;
     using registryIndexType = typename entityType::indexType;
 
     EntityManager() = default;
@@ -61,7 +61,7 @@ class EntityManager {
               typename = std::enable_if_t<std::is_class<ComponentType>{}>>
     auto &getEntity(ComponentType &component) {
         return registry.get(
-            static_cast<Component<entityType, ComponentType> &>(component)
+            static_cast<InternalComponent<entityType, ComponentType> &>(component)
                 .getEntityIndex());
     }
 
@@ -106,6 +106,8 @@ class EntityManager {
 
         components.destroy(
             components.get(entity.template get<ComponentType>()));
+
+        entity.template set<ComponentType>(-1);
     }
 
     void flush() {
@@ -149,14 +151,6 @@ class EntityManager {
     template <typename ComponentType>
     void flushComponents() {
         auto &components = componentRegistries.template get<ComponentType>();
-
-        for (auto it = components.destroyedBegin();
-             it != components.destroyedEnd(); it++) {
-            auto index = *it;
-
-            getEntity(components.get(index).getEntityIndex())
-                .template set<ComponentType>(-1);
-        }
 
         components.flush();
 

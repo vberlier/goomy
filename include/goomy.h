@@ -7,3 +7,4 @@
 #include "goomy/Registry.h"
 #include "goomy/Signal.h"
 #include "goomy/System.h"
+#include "goomy/Wrapper.h"

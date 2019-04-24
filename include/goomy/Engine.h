@@ -4,27 +4,28 @@
 #include "goomy/Entity.h"
 #include "goomy/Signal.h"
 #include "goomy/System.h"
+#include "goomy/Wrapper.h"
 
 namespace goomy {
 
 template <typename... SystemTypes>
 struct Mount {
     template <typename EngineType>
-    using systemManagerType = SystemManager<EngineType, SystemTypes...>;
+    using systemManagerType = internal::SystemManager<EngineType, SystemTypes...>;
 };
 
 template <typename... ComponentTypes>
-struct Components {
-    using entityManagerType = EntityManager<ComponentTypes...>;
+struct Register {
+    using entityManagerType = internal::EntityManager<ComponentTypes...>;
 
     template <typename systemManagerType>
     using signalDispatcherType =
-        SignalDispatcher<systemManagerType, entityManagerType,
+        internal::SignalDispatcher<systemManagerType, entityManagerType,
                          ComponentTypes...>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>
-class Engine : public EngineBase {
+class Engine : public internal::EngineBase {
   public:
     using engineType = Engine<MountedSystems, DeclaredComponents>;
 
@@ -54,6 +55,14 @@ class Engine : public EngineBase {
     void dispatch(Args &&... args) {
         signalDispatcher.template dispatch<SignalType>(
             std::forward<Args>(args)...);
+    }
+
+    auto entity() {
+        return Entity(*this, entityManager.createEntity());
+    }
+
+    auto entity(typename entityManagerType::registryIndexType index) {
+        return Entity(*this, entityManager.getEntity(index));
     }
 
     auto &getEntityManager() {

@@ -18,7 +18,7 @@ class Renderer {};
 
 using Engine =
     goomy::Engine<goomy::Mount<Settings, FooSystem, BarSystem>,
-                  goomy::Components<Testing, Transform, Collider, Renderer>>;
+                  goomy::Register<Testing, Transform, Collider, Renderer>>;
 
 enum class Difficulty { easy, hard };
 
@@ -80,6 +80,29 @@ void FooSystem::onUpdate(Engine &engine) {
         << "Foo index: "
         << entityManager.getEntity(entityManager.getEntityCount()).getIndex()
         << std::endl;
+
+    std::cout << "Use wrapper API" << std::endl;
+
+    auto entity = engine.entity();
+    std::cout << "New entity: " << entity.id() << std::endl;
+    std::cout << "Lookup entity: " << engine.entity(entity.id()).id() << std::endl;
+    std::cout << "Has test component? " << entity.has<Testing>() << std::endl;
+
+    auto testing = entity.create<Testing>(95);
+
+    std::cout << "What about now? " << entity.has<Testing>() << std::endl;
+    std::cout << "Testing id: " << testing.id() << std::endl;
+    std::cout << "Testing data: " << testing.data().frame << std::endl;
+    std::cout << "Entity through component: " << testing.entity().id() << std::endl;
+    std::cout << "Data through entity: " << entity.get<Testing>().data().frame << std::endl;
+
+    testing.destroy();
+
+    std::cout << "Entity no longer has component: " << entity.has<Testing>() << std::endl;
+
+    entity.destroy();
+
+    std::cout << "Destroyed " << std::endl;
 }
 
 void BarSystem::onBeforeUpdate(Engine &engine) {

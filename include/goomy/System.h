@@ -4,7 +4,7 @@
 #include <experimental/type_traits>
 #include <type_traits>
 
-namespace goomy {
+namespace goomy::internal {
 
 template <typename SystemType>
 class System : public SystemType {

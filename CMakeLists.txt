@@ -12,6 +12,7 @@ add_library(${PROJECT_NAME}
         include/goomy/Registry.h
         include/goomy/System.h
         include/goomy/Signal.h
+        include/goomy/Wrapper.h
         include/goomy.h
         )
 

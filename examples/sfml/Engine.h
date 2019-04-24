@@ -18,7 +18,7 @@ class Age;
 
 using Engine =
     goomy::Engine<goomy::Mount<AgeSystem,Overlay, ResourceManager, Window>,
-                  goomy::Components<Dummy, Age>>;
+                  goomy::Register<Dummy, Age>>;
 
 GOOMY_SIGNAL(onMouseMove);
 GOOMY_SIGNAL(onClick);

@@ -6,6 +6,10 @@ namespace goomy {
 
 using clock = std::chrono::steady_clock;
 
+}
+
+namespace goomy::internal {
+
 class EngineBase {
   public:
     EngineBase();

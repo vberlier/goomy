@@ -2,16 +2,16 @@
 
 #include "goomy/Registry.h"
 
-namespace goomy {
+namespace goomy::internal {
 
 template <typename EntityType, typename ComponentType>
-class Component : public ComponentType {
+class InternalComponent : public ComponentType {
   public:
     using entityIndexType = typename EntityType::indexType;
     using componentType = ComponentType;
 
     template <typename... Args>
-    explicit Component(entityIndexType index, Args &&... args)
+    explicit InternalComponent(entityIndexType index, Args &&... args)
         : entityIndex(index), componentType(std::forward<Args>(args)...) {
     }
 
@@ -43,7 +43,7 @@ struct ComponentRegistryContainer<EntityType, T> {
     }
 
   private:
-    Registry<RegistryItem<Component<EntityType, T>>> registry;
+    Registry<RegistryItem<InternalComponent<EntityType, T>>> registry;
 };
 
 }

@@ -14,7 +14,7 @@
         }                                                                      \
     }
 
-namespace goomy {
+namespace goomy::internal {
 
 namespace signals {
 

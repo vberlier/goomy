@@ -4,7 +4,7 @@
 #include <set>
 #include <vector>
 
-namespace goomy {
+namespace goomy::internal {
 
 template <typename BaseType, typename IndexType = std::size_t>
 class RegistryItem : public BaseType {
