@@ -29,7 +29,7 @@ class TestSystem {
         }
     }
 
-    void onAfterUpdate(Engine &engine, TestComponent &test) {
+    void onUpdate(Engine &engine, TestComponent &test) {
         test.number--;
 
         if (test.number == 0) {

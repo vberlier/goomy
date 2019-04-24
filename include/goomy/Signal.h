@@ -5,8 +5,9 @@
 
 #define GOOMY_SIGNAL(NAME)                                                     \
     struct NAME {                                                              \
-        template <typename T>                                                  \
-        using callback = decltype(&T::NAME);                                   \
+        template <typename T, typename... Args>                                \
+        using detector =                                                       \
+            decltype(std::declval<T>().NAME(std::declval<Args>()...));         \
                                                                                \
         template <typename T, typename... Args>                                \
         static void invoke(T &instance, Args &&... args) {                     \
@@ -30,12 +31,8 @@ GOOMY_SIGNAL(onAfterUpdate);
 
 template <typename SignalType>
 struct Signal {
-    template <typename T>
-    using callback = typename SignalType::template callback<T>;
-
     template <typename T, typename... Args>
-    using detector = decltype((std::declval<T>().*std::declval<callback<T>>())(
-        std::declval<Args>()...));
+    using detector = typename SignalType::template detector<T, Args...>;
 
     template <typename... Args>
     using detected = std::experimental::is_detected<detector, Args...>;
