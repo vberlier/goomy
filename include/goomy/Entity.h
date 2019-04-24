@@ -115,10 +115,7 @@ class EntityManager {
 
         registry.flush();
 
-        for (auto it = registry.destroyedBegin(); it != registry.destroyedEnd();
-             it++) {
-            auto index = *it;
-
+        for (auto index : registry.getDestroyed()) {
             if (index >= registry.size()) {
                 break;
             }
@@ -154,10 +151,7 @@ class EntityManager {
 
         components.flush();
 
-        for (auto it = components.destroyedBegin();
-             it != components.destroyedEnd(); it++) {
-            auto index = *it;
-
+        for (auto index : components.getDestroyed()) {
             if (index >= components.size()) {
                 break;
             }

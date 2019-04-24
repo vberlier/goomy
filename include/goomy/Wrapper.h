@@ -7,8 +7,9 @@ class Entity;
 
 template <typename EngineType, typename ComponentType>
 class Component {
-    using internalComponentType = internal::RegistryItem<internal::InternalComponent<
-        typename EngineType::entityManagerType::entityType, ComponentType>>;
+    using internalComponentType =
+        internal::RegistryItem<internal::InternalComponent<
+            typename EngineType::entityManagerType::entityType, ComponentType>>;
 
   public:
     Component(EngineType &engine, internalComponentType &component)
@@ -25,8 +26,8 @@ class Component {
 
     auto entity() {
         return Entity<EngineType>(engineReference,
-                      engineReference.getEntityManager().getEntity(
-                          component.getEntityIndex()));
+                                  engineReference.getEntityManager().getEntity(
+                                      component.getEntityIndex()));
     }
 
     ComponentType &data() {

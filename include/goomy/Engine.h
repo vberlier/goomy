@@ -11,7 +11,8 @@ namespace goomy {
 template <typename... SystemTypes>
 struct Mount {
     template <typename EngineType>
-    using systemManagerType = internal::SystemManager<EngineType, SystemTypes...>;
+    using systemManagerType =
+        internal::SystemManager<EngineType, SystemTypes...>;
 };
 
 template <typename... ComponentTypes>
@@ -21,7 +22,7 @@ struct Register {
     template <typename systemManagerType>
     using signalDispatcherType =
         internal::SignalDispatcher<systemManagerType, entityManagerType,
-                         ComponentTypes...>;
+                                   ComponentTypes...>;
 };
 
 template <typename MountedSystems, typename DeclaredComponents>

@@ -83,28 +83,8 @@ class Registry {
         destroyed.clear();
     }
 
-    auto begin() const {
-        return items.begin();
-    }
-
-    auto end() const {
-        return items.end();
-    }
-
-    auto createdBegin() const {
-        return created.begin();
-    }
-
-    auto createdEnd() const {
-        return created.end();
-    }
-
-    auto destroyedBegin() const {
-        return destroyed.begin();
-    }
-
-    auto destroyedEnd() const {
-        return destroyed.end();
+    const auto &getDestroyed() const {
+        return destroyed;
     }
 
     std::size_t size() const {
