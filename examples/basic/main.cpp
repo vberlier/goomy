@@ -18,10 +18,24 @@ class TestSystem {
     void onBeforeUpdate() {
         std::cout << "---" << std::endl;
     }
-    
+
     void onUpdate(Engine &engine) {
-        // Create a new entity with a TestComponent
-        engine.entity().create<TestComponent>(7);
+        std::cout << "New entity" << std::endl;
+        auto entity = engine.entity();
+
+        if (entity.id() % 2 == 0) {
+            std::cout << "Attach test component with 7" << std::endl;
+            entity.create<TestComponent>(7);
+        }
+    }
+
+    void onAfterUpdate(Engine &engine, TestComponent &test) {
+        test.number--;
+
+        if (test.number == 0) {
+            std::cout << "Shutting down" << std::endl;
+            engine.shutdown();
+        }
     }
 };
 
