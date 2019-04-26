@@ -17,8 +17,8 @@ class ParticleSystem {
 
     void onUpdate(Engine &engine, Particle &particle);
     void onLeftMouseDrag(Engine &engine, int x, int y);
-    void onRightMouseDown(Engine &engine, int x, int y);
-    void onRightMouseDrag(Engine &engine, int x, int y);
+    void onRightMouseDown(int x, int y);
+    void onRightMouseDrag(int x, int y);
     void onRightMouseUp(Engine &engine);
 
     const sf::Vector2f &getSpawnPosition() const;

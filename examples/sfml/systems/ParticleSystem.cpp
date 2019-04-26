@@ -51,11 +51,11 @@ void ParticleSystem::onLeftMouseDrag(Engine &engine, int x, int y) {
     applyRandomness(entity.get<Particle>().data());
 }
 
-void ParticleSystem::onRightMouseDown(Engine &engine, int x, int y) {
+void ParticleSystem::onRightMouseDown(int x, int y) {
     spawnPosition = sf::Vector2f(x, y);
 }
 
-void ParticleSystem::onRightMouseDrag(Engine &engine, int x, int y) {
+void ParticleSystem::onRightMouseDrag(int x, int y) {
     spawnVelocity = (spawnPosition - sf::Vector2f(x, y)) * 10.0f / scale;
 }
 

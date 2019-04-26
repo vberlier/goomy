@@ -39,7 +39,7 @@ struct Signal {
 
     template <typename T, typename... Args>
     static typename std::enable_if_t<!detected<T, Args...>{}>
-    invoke(T &instance, Args &&... args) {
+    invoke(T &, Args &&...) {
     }
 
     template <typename T, typename... Args>
