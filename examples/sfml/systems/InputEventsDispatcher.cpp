@@ -1,9 +1,11 @@
 #include "main.h"
 
-void InputEventsDispatcher::onMouseMove(Engine &engine, sf::Event &event) {
-    mouseX = event.mouseMove.x;
-    mouseY = event.mouseMove.y;
+InputEventsDispatcher::InputEventsDispatcher()
+    : mouseX(0), mouseY(0), leftButtonPressed(false),
+      rightButtonPressed(false) {
+}
 
+void InputEventsDispatcher::onUpdate(Engine &engine) {
     if (leftButtonPressed) {
         engine.dispatch<onLeftMouseDrag>(mouseX, mouseY);
     }
@@ -11,6 +13,11 @@ void InputEventsDispatcher::onMouseMove(Engine &engine, sf::Event &event) {
     if (rightButtonPressed) {
         engine.dispatch<onRightMouseDrag>(mouseX, mouseY);
     }
+}
+
+void InputEventsDispatcher::onMouseMove(sf::Event &event) {
+    mouseX = event.mouseMove.x;
+    mouseY = event.mouseMove.y;
 }
 
 void InputEventsDispatcher::onMouseDown(Engine &engine, sf::Event &event) {

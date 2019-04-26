@@ -13,8 +13,8 @@ void Display::onUpdate(Engine &engine) {
 
 void Display::onUpdate(Engine &engine, Particle &particle) {
     sf::CircleShape circle(6);
-    circle.setPosition(particle.x - circle.getRadius(),
-                       particle.y - circle.getRadius());
+    circle.setPosition(particle.position.x - circle.getRadius(),
+                       particle.position.y - circle.getRadius());
     circle.setFillColor(color);
 
     engine.get<Window>().draw(circle);

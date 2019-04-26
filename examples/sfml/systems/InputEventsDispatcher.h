@@ -5,7 +5,10 @@
 
 class InputEventsDispatcher {
   public:
-    void onMouseMove(Engine &engine, sf::Event &event);
+    InputEventsDispatcher();
+
+    void onUpdate(Engine &engine);
+    void onMouseMove(sf::Event &event);
     void onMouseDown(Engine &engine, sf::Event &event);
     void onMouseUp(Engine &engine, sf::Event &event);
 
