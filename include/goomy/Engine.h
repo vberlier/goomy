@@ -55,8 +55,9 @@ class Engine : public internal::EngineBase {
 
     template <typename SignalType, typename... Args>
     void dispatch(Args &&... args) {
+        signalDispatcher.template dispatch<SignalType>();
         signalDispatcher.template dispatch<SignalType>(
-            std::forward<Args>(args)...);
+                std::forward<Args>(args)...);
     }
 
     auto entity() {

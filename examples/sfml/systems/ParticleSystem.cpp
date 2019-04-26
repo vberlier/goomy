@@ -2,8 +2,8 @@
 #include <algorithm>
 
 ParticleSystem::ParticleSystem()
-    : gravity{0, 9.8}, scale(400), bounciness(0.5), rng(std::random_device()()),
-      randomness(0.5) {
+    : spawnPosition(0, 0), spawnVelocity(0, 0), gravity{0, 9.8}, scale(400),
+      bounciness(0.5), rng(std::random_device()()), randomness(0.5) {
 }
 
 Particle::Particle(sf::Vector2f position, sf::Vector2f velocity)
@@ -36,16 +36,47 @@ void ParticleSystem::onUpdate(Engine &engine, Particle &particle) {
 }
 
 void ParticleSystem::onLeftMouseDrag(Engine &engine, int x, int y) {
+    sf::Vector2f position(x, y);
+    sf::Vector2f velocity(0, 1);
+
+    if (spawnVelocity != sf::Vector2f(0, 0)) {
+        position = spawnPosition;
+        velocity = spawnVelocity;
+    }
+
     auto entity = engine.entity()
-                      .with<Particle>(sf::Vector2f(x, y), sf::Vector2f(0, 0))
+                      .with<Particle>(position, velocity)
                       .with<Age>(std::chrono::seconds(2));
 
     applyRandomness(entity.get<Particle>().data());
 }
 
+void ParticleSystem::onRightMouseDown(Engine &engine, int x, int y) {
+    spawnPosition = sf::Vector2f(x, y);
+}
+
+void ParticleSystem::onRightMouseDrag(Engine &engine, int x, int y) {
+    spawnVelocity = (spawnPosition - sf::Vector2f(x, y)) * 10.0f / scale;
+}
+
+void ParticleSystem::onRightMouseUp(Engine &engine) {
+    auto entity = engine.entity()
+                      .with<Particle>(spawnPosition, spawnVelocity)
+                      .with<Age>(std::chrono::seconds(2));
+
+    applyRandomness(entity.get<Particle>().data());
+
+    spawnVelocity = sf::Vector2f(0, 0);
+}
+
 void ParticleSystem::applyRandomness(Particle &particle) {
-    particle.velocity += sf::Vector2f((nextFloat(rng) - 0.5) * randomness,
-                                      (nextFloat(rng) - 0.5) * randomness);
+    auto factor =
+        std::max(std::abs(particle.velocity.x), std::abs(particle.velocity.y)) /
+        2.0f;
+
+    particle.velocity +=
+        sf::Vector2f((nextFloat(rng) - 0.5) * randomness * factor,
+                     (nextFloat(rng) - 0.5) * randomness * factor);
 }
 
 void ParticleSystem::clampToViewport(Particle &particle,
@@ -54,4 +85,12 @@ void ParticleSystem::clampToViewport(Particle &particle,
         std::clamp(particle.position.x, 0.0f, (float)viewport.x);
     particle.position.y =
         std::clamp(particle.position.y, 0.0f, (float)viewport.y);
+}
+
+const sf::Vector2f &ParticleSystem::getSpawnPosition() const {
+    return spawnPosition;
+}
+
+const sf::Vector2f &ParticleSystem::getSpawnVelocity() const {
+    return spawnVelocity;
 }

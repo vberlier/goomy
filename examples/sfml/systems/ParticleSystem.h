@@ -17,8 +17,17 @@ class ParticleSystem {
 
     void onUpdate(Engine &engine, Particle &particle);
     void onLeftMouseDrag(Engine &engine, int x, int y);
+    void onRightMouseDown(Engine &engine, int x, int y);
+    void onRightMouseDrag(Engine &engine, int x, int y);
+    void onRightMouseUp(Engine &engine);
+
+    const sf::Vector2f &getSpawnPosition() const;
+    const sf::Vector2f &getSpawnVelocity() const;
 
   private:
+    sf::Vector2f spawnPosition;
+    sf::Vector2f spawnVelocity;
+
     sf::Vector2f gravity;
     float scale;
     float bounciness;

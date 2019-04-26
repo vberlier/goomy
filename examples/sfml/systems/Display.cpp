@@ -2,6 +2,7 @@
 
 void Display::onUpdate(Engine &engine) {
     auto &window = engine.get<Window>();
+    auto &particleSystem = engine.get<ParticleSystem>();
     auto &resourceManager = engine.get<ResourceManager>();
 
     sf::Text text(stats(engine), resourceManager.getDefaultFont());
@@ -9,6 +10,15 @@ void Display::onUpdate(Engine &engine) {
     text.setCharacterSize(16);
 
     window.draw(text);
+
+    if (particleSystem.getSpawnVelocity() != sf::Vector2f(0, 0)) {
+        auto velocity = particleSystem.getSpawnVelocity() * 20.0f;
+
+        sf::Vertex line[] = {particleSystem.getSpawnPosition(),
+                             particleSystem.getSpawnPosition() - velocity};
+
+        window.draw(line, 2, sf::Lines);
+    }
 }
 
 void Display::onUpdate(Engine &engine, Particle &particle) {
