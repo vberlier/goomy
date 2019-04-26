@@ -6,12 +6,8 @@ struct Age {
     goomy::clock::duration age = goomy::clock::duration(0);
     std::optional<goomy::clock::duration> maxAge;
 
-    Age() : maxAge(std::nullopt) {
-    }
-
-    explicit Age(goomy::clock::duration maxAge)
-        : maxAge(std::optional(maxAge)) {
-    }
+    Age();
+    explicit Age(goomy::clock::duration maxAge);
 };
 
 class AgeSystem {

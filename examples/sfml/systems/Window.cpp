@@ -25,7 +25,9 @@ void Window::onUpdate(Engine &engine) {
         } else if (event.type == sf::Event::MouseMoved) {
             engine.dispatch<onMouseMove>(event);
         } else if (event.type == sf::Event::MouseButtonPressed) {
-            engine.dispatch<onClick>(event);
+            engine.dispatch<onMouseDown>(event);
+        } else if (event.type == sf::Event::MouseButtonReleased) {
+            engine.dispatch<onMouseUp>(event);
         }
     }
 }

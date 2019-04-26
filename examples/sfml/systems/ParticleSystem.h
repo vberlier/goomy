@@ -6,12 +6,10 @@ struct Particle {
     int x;
     int y;
 
-    Particle(int x, int y) : x(x), y(y) {
-    }
+    Particle(int x, int y);
 };
 
 class ParticleSystem {
   public:
-    void onUpdate(Engine &engine, Particle &particle);
-    void onClick(Engine &engine, sf::Event &event);
+    void onLeftMouseDown(Engine &engine, int x, int y);
 };

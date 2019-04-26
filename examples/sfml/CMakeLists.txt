@@ -8,8 +8,10 @@ add_compile_definitions(EXAMPLE_SFML_RESOURCES_DIR="${PROJECT_SOURCE_DIR}/resour
 add_executable(${PROJECT_NAME}
         systems/AgeSystem.cpp
         systems/AgeSystem.h
-        systems/Overlay.cpp
-        systems/Overlay.h
+        systems/Display.cpp
+        systems/Display.h
+        systems/InputEventsDispatcher.cpp
+        systems/InputEventsDispatcher.h
         systems/ParticleSystem.cpp
         systems/ParticleSystem.h
         systems/ResourceManager.cpp

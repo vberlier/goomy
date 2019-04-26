@@ -3,19 +3,27 @@
 #include <goomy.h>
 
 class AgeSystem;
-struct Age;
-
-class Overlay;
-
+class Display;
+class InputEventsDispatcher;
 class ParticleSystem;
+class ResourceManager;
+class Window;
+
+struct Age;
 struct Particle;
 
-class ResourceManager;
-
-class Window;
 GOOMY_SIGNAL(onMouseMove);
-GOOMY_SIGNAL(onClick);
+GOOMY_SIGNAL(onMouseDown);
+GOOMY_SIGNAL(onMouseUp);
 
-using Engine = goomy::Engine<
-    goomy::Mount<AgeSystem, Overlay, ParticleSystem, ResourceManager, Window>,
-    goomy::Register<Age, Particle>>;
+GOOMY_SIGNAL(onLeftMouseDown);
+GOOMY_SIGNAL(onLeftMouseDrag);
+GOOMY_SIGNAL(onLeftMouseUp);
+GOOMY_SIGNAL(onRightMouseDown);
+GOOMY_SIGNAL(onRightMouseDrag);
+GOOMY_SIGNAL(onRightMouseUp);
+
+using Engine =
+    goomy::Engine<goomy::Mount<AgeSystem, Display, InputEventsDispatcher,
+                               ParticleSystem, ResourceManager, Window>,
+                  goomy::Register<Age, Particle>>;
