@@ -3,7 +3,7 @@
 
 ParticleSystem::ParticleSystem()
     : spawnPosition(0, 0), spawnVelocity(0, 0), gravity{0, 9.8}, scale(400),
-      bounciness(0.5), rng(std::random_device()()), randomness(0.5) {
+      bounciness(0.5), rng(std::random_device()()), randomness(0.3) {
 }
 
 Particle::Particle(sf::Vector2f position, sf::Vector2f velocity)
