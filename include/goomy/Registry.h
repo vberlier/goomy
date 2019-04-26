@@ -14,7 +14,7 @@ class RegistryItem : public BaseType {
 
     template <typename... Args>
     explicit RegistryItem(indexType index, Args &&... args)
-        : registryIndex(index), baseType(std::forward<Args>(args)...) {
+        : baseType(std::forward<Args>(args)...), registryIndex(index) {
     }
 
     // Disallow copy

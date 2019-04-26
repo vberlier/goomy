@@ -12,7 +12,7 @@ class InternalComponent : public ComponentType {
 
     template <typename... Args>
     explicit InternalComponent(entityIndexType index, Args &&... args)
-        : entityIndex(index), componentType(std::forward<Args>(args)...) {
+        : componentType(std::forward<Args>(args)...), entityIndex(index) {
     }
 
     auto getEntityIndex() const {
