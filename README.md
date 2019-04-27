@@ -6,11 +6,11 @@
 
 **⚠️ Disclaimer ⚠️**
 
-This project is a proof-of-concept, and is mostly an excuse for me to get familiar with modern C++ and a few experimental features. Don't use this code. _(yet?)_
+This project is a proof-of-concept and is mostly an excuse for me to get familiar with modern C++ and a few experimental features. Don't use this code. _(yet?)_
 
 ## Introduction
 
-The framework is heavily template-based, and effectively almost disappears at compile-time. Components of the same type are stored contiguously in memory, and entities only hold indices linking to their associated components. Entities are stored contiguously in memory as well, but all these lower-level details are packaged behind a lightweight wrapper api.
+The framework is heavily template-based, and effectively almost disappears at compile-time. Components of the same type are stored contiguously in memory, and entities only hold indices linking to their associated components. Entities are stored contiguously in memory as well, but all these lower-level details are packaged behind a lightweight wrapper API.
 
 The framework also comes with a signaling/event system that makes use of the [detection idiom](https://en.cppreference.com/w/cpp/experimental/is_detected) to facilitate dependency injection.
 
@@ -62,7 +62,7 @@ int main() {
 
 ## Running the examples
 
-The project has only been tested on Linux, but doesn't rely on any platform-specific library so you should be good as long as you have a compliant C++17 compiler on hand. One of the example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/), so you'll need to make sure that the latest stable version is available on your system.
+The project has only been tested on Linux but doesn't rely on any platform-specific library so you should be good as long as you have a compliant C++17 compiler on hand. One of the examples demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/), so you'll need to make sure that the latest stable version is available on your system.
 
 1. Clone this repository
 
@@ -115,7 +115,7 @@ Instantiating the template effectively generates an entity type, creates registr
 
 > You will probably need to forward-declare your system classes because you'll often want to reference your custom `Engine` in their declarations.
 
-After declaring you custom engine type, the only thing you need to do is to instantiate it and call the `loop()` member function.
+After declaring your custom engine type, the only thing you need to do is to instantiate it and call the `loop()` member function.
 
 ```cpp
 int main() {
@@ -126,7 +126,7 @@ int main() {
 
 ### Systems
 
-The framework lets you mount any class as a system, there are no requirements, no specific base class to inherit from. This makes it possible to mount an [SFML window](https://www.sfml-dev.org/tutorials/2.5/window-window.php) to your engine for instance, there are really no limitations to what can be a system (see: [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml)).
+The framework lets you mount any class as a system, there are no requirements, no specific base class to inherit from. For instance, This makes it possible to mount an [SFML window](https://www.sfml-dev.org/tutorials/2.5/window-window.php) to your engine, there are really no limitations to what can be a system (see: [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml)).
 
 ```cpp
 class TestSystem {};
@@ -140,7 +140,7 @@ goomy::Mount<TestSystem>
 
 ### Signals
 
-The distinctive capability of classes that have been mounted to the engine as systems is that they can respond to signals. Dispatching a signal will call the associated member function on every system if it exists.
+The distinctive capability of classes that have been mounted to the engine as systems is that they can respond to signals. Dispatching a signal will call the associated member function on all the systems where it is defined.
 
 ```cpp
 class TestSystem {
@@ -234,7 +234,7 @@ It's important to understand that signals don't have any runtime footprint. Ever
 
 ### Engine
 
-The engine instance lets you interact with the systems, entities and components you declared when creating your custom `Engine` type. You can use it to get a reference to any of your custom systems, dispatch signals, iterate through entities and components and more. Note that the engine is explicitly marked as non-copiable, and cannot be moved.
+The engine instance lets you interact with the systems, entities, and components you declared when creating your custom `Engine` type. You can use it to get a reference to any of your custom systems, dispatch signals, iterate through entities and components and more. Note that the engine is explicitly marked as non-copiable, and cannot be moved.
 
 #### `engine.get<SystemType>()`
 
@@ -296,7 +296,7 @@ auto count = engine.getEntityCount();
 
 #### `engine.components<ComponentType>()`
 
-This lets your iterate over all the components of a specific type.
+This lets you iterate over all the components of a specific type.
 
 ```cpp
 for (auto component1 : engine.components<Component1>()) {
@@ -409,7 +409,7 @@ entity.destroy();
 
 The framework lets you interact with the internal component instances through lightweight reference wrappers that provide a nice and clean API.
 
-Instances of each type of component are internally stored contiguously in memory in separate standard `std::vector`, very similarly to how entities are stored internally as well. The engine guarantees that the vectors holding the components internally will not be mutated during the frame by buffering component creation and deletion in separate containers, which in turn means that component reference wrappers are valid for the entire frame.
+Instances of each type of component are internally stored contiguously in memory in separate standard `std::vector`, in a very similar way to how entities are stored internally as well. The engine guarantees that the vectors holding the components internally will not be mutated during the frame by buffering component creation and deletion in separate containers, which in turn means that component reference wrappers are valid for the entire frame.
 
 However, the engine flushes the pending modifications at the end of each frame, which potentially mutates the internal vectors and invalidates references and reference wrappers. Just like with entity reference wrappers, unless you know what you're doing, the lifetime of any component reference wrapper should not exceed the frame it was created in.
 
