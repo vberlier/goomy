@@ -124,7 +124,9 @@ int main() {
 }
 ```
 
-### Engine API
+## API reference
+
+### Engine
 
 The engine instance lets you interact with the systems, entities and components you declared when creating your custom `Engine` type. You can use it to get a reference to any of your custom systems, dispatch signals, iterate through entities and components and more. Note that the engine is explicitly marked as non-copiable, and cannot be moved.
 
@@ -222,6 +224,73 @@ This returns the number of seconds that it took for executing the frame.
 
 ```cpp
 position += velocity * engine.deltaTime();
+```
+
+### Entity
+
+The framework lets you interact with the internal entities through lightweight reference wrappers that provide a nice and clean API.
+
+#### `entity.id()`
+
+Returns the id of the entity. The id can be used to retrieve the entity from the engine instance with the `engine.entity(id)` member function.
+
+```cpp
+auto id = entity.id();
+```
+
+#### `entity.engine()`
+
+Returns a reference to the engine instance.
+
+```cpp
+auto &engine = entity.engine();
+```
+
+#### `entity.has<ComponentType>()`
+
+Whether the entity has a component of the given type.
+
+```cpp
+bool hasComponent1 = entity.has<Component1>();
+```
+
+#### `entity.get<ComponentType>()`
+
+This function returns a lightweight wrapper around a reference to the component of the given type associated with the entity.
+
+```cpp
+auto component1 = entity.get<Component1>();
+```
+
+This function should only be called if the component actually exists so make sure to check for the component with the `has<ComponentType>()` member function where appropriate.
+
+#### `entity.create<ComponentType>(Args &&... args)`
+
+Create and attach a new component of the given type to the entity. The arguments are passed to the constructor of the component. The function returns a component wrapper.
+
+```cpp
+auto component1 = entity.create<Component1>(arg1, arg2, ...);
+```
+
+#### `entity.with<ComponentType>(Args &&... args)`
+
+This function is very similar to the `entity.create<ComponentType>()` member function, but returns the entity itself instead of a reference wrapper to the newly created component.
+
+```cpp
+entity
+    .with<Component1>(arg1, arg2, ...)
+    .with<Component2>(arg1, arg2, ...)
+    .with<Component3>(arg1, arg2, ...);
+```
+
+The fluent API makes it easy to create multiple components at the same time.
+
+#### `entity.destroy()`
+
+Destroys the entity. This will also destroy all the components associated with the entity.
+
+```cpp
+entity.destroy();
 ```
 
 ---
