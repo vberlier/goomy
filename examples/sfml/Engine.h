@@ -9,8 +9,8 @@ class ParticleSystem;
 class ResourceManager;
 class Window;
 
-struct Age;
-struct Particle;
+class Age;
+class Particle;
 
 GOOMY_SIGNAL(onMouseMove);
 GOOMY_SIGNAL(onMouseDown);

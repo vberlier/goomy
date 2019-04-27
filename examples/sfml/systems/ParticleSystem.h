@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 
-struct Particle {
+class Particle {
+  public:
     sf::Vector2f position;
     sf::Vector2f velocity;
 

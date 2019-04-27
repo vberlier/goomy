@@ -1,40 +1,36 @@
 #include <goomy.h>
-#include <iostream>
 
+class Lifetime;
 class TestSystem;
 
-struct TestComponent {
-    int number;
+using Engine =
+    goomy::Engine<goomy::Mount<TestSystem>, goomy::Register<Lifetime>>;
 
-    TestComponent(int number) : number(number) {
+class Lifetime {
+  public:
+    int lifetime;
+
+    Lifetime(int lifetime) : lifetime(lifetime) {
     }
 };
 
-using Engine =
-    goomy::Engine<goomy::Mount<TestSystem>, goomy::Register<TestComponent>>;
-
 class TestSystem {
   public:
-    void onBeforeUpdate() {
-        std::cout << "---" << std::endl;
-    }
-
-    void onUpdate(Engine &engine) {
-        std::cout << "New entity" << std::endl;
-        auto entity = engine.entity();
-
-        if (entity.id() % 2 == 0) {
-            std::cout << "Attach test component with 7" << std::endl;
-            entity.create<TestComponent>(7);
+    void onInit(Engine &engine) {
+        for (int i = 0; i < 1000; ++i) {
+            engine.entity().with<Lifetime>(i);
         }
     }
 
-    void onUpdate(Engine &engine, TestComponent &test) {
-        test.number--;
-
-        if (test.number == 0) {
-            std::cout << "Shutting down" << std::endl;
+    void onUpdate(Engine &engine) {
+        if (engine.getEntityCount() == 0) {
             engine.shutdown();
+        }
+    }
+
+    void onUpdate(goomy::Component<Engine, Lifetime> component) {
+        if (--component.data().lifetime <= 0) {
+            component.entity().destroy();
         }
     }
 };

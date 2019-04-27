@@ -2,7 +2,8 @@
 
 #include "Engine.h"
 
-struct Age {
+class Age {
+  public:
     goomy::clock::duration age = goomy::clock::duration(0);
     std::optional<goomy::clock::duration> maxAge;
 
