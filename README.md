@@ -230,6 +230,71 @@ It's important to understand that signals don't have any runtime footprint. Ever
 
 ---
 
+### Components
+
+Just like with systems, there are no restrictions when it comes to what kind of class can be a component.
+
+```cpp
+class Dummy {};
+```
+
+Components must be registered when creating your custom `Engine` type.
+
+```cpp
+goomy::Register<Dummy>;
+```
+
+The engine instance allows you to create and destroy entities and components, and iterate through them. You can check out the API reference for more information.
+
+```cpp
+class Dummy {
+  public:
+    int number;
+    Dummy(int number) : number(number) {}
+};
+
+void TestSystem::onUpdate(Engine &engine) {
+    engine.entity().with<Dummy>(42);
+}
+
+void OtherSystem::onUpdate(Engine &engine) {
+    for (auto component : engine.components<Dummy>()) {
+        component.data().number++;
+    }
+}
+```
+
+Since iterating over all the components of a given type is one of the most common operations you can do, the framework makes it possible to lift the iteration in the dependency injection mechanism and ask for a component reference to be injected in any member function called by a signal.
+
+```cpp
+void OtherSystem::onUpdate(Dummy &dummy) {
+    dummy.number++;
+}
+```
+
+Here, the `onUpdate()` function will be called each frame for every single `Dummy` component. This particular example shows that you can ask for the component reference directly, but it's also possible to request a component reference wrapper (more details in the component API reference).
+
+```cpp
+void OtherSystem::onUpdate(goomy::Component<Engine, Dummy> component) {
+    if (++component.data().number > 9000) {
+        component.entity().destroy();
+    }
+}
+```
+
+It's worth mentioning that component injection is compatible with engine injection and custom parameters.
+
+```cpp
+void TestSystem::onUpdate(Engine &engine) {
+    engine.dispatch<onCustomEvent>(42);
+}
+
+// All of these will get called for each Dummy component
+void OtherSystem::onCustomEvent(Dummy &dummy, int number) {}
+void OtherSystem::onCustomEvent(Engine &engine, Dummy &dummy, int number) {}
+void OtherSystem::onCustomEvent(Dummy &dummy) {}
+```
+
 ## API reference
 
 ### Engine
@@ -310,7 +375,7 @@ For more details check out the component API reference.
 
 #### `engine.loop()`
 
-This function is usually called in your program's `main()`. It runs the main execution loop and will block until the engine gets shutdown.
+This function is usually called in your program's `main()`. It runs the main execution loop and will block until the engine gets shut down.
 
 ```cpp
 engine.loop();
