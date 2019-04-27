@@ -111,11 +111,11 @@ using Engine = goomy::Engine<goomy::Mount<System1, System2, ...>,
                              goomy::Register<Component1, Component2, ...>>;
 ```
 
-Instantiating the template effectively generates an entity type, creates registries for your different components and wires all the systems and signals together. Everything then happens through your specialized `Engine` type alias.
+Instantiating the template effectively generates an entity type, creates registries for your different components and wires all the systems and signals together. Everything then happens through your specialized `Engine` type.
 
 > You will probably need to forward-declare your system classes because you'll often want to reference your custom `Engine` in their declarations.
 
-Once you declared you custom engine type, the only thing you need to do is to instantiate it and call the `loop()` member function.
+After declaring you custom engine type, the only thing you need to do is to instantiate it and call the `loop()` member function.
 
 ```cpp
 int main() {
@@ -123,6 +123,38 @@ int main() {
     return 0;
 }
 ```
+
+### Systems
+
+The framework lets you mount any class as a system, there are no requirements, no specific base class to inherit from. This makes it possible to mount an [SFML window](https://www.sfml-dev.org/tutorials/2.5/window-window.php) to your engine for instance, there are really no limitations to what can be a system (see: [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml)).
+
+```cpp
+class TestSystem {};
+```
+
+After mounting the system to the engine, the framework will take care of instantiating it.
+
+```cpp
+goomy::Mount<TestSystem>
+```
+
+### Signals
+
+The distinctive capability of classes that have been mounted to the engine as systems is that they can respond to signals. Dispatching a signal will call the associated member function on every system if it exists.
+
+```cpp
+class TestSystem {
+  public:
+    void onInit();
+    void onUpdate();
+};
+```
+
+The `onInit` signal is dispatched by the engine before entering the main loop. Systems that define the `onInit()` member function will be able to run code on initialization.
+
+Similarly, the `onUpdate` signal is also dispatched by the engine. It will call the `onUpdate()` member function every frame on all the systems where it is defined.
+
+> The engine also dispatches `onBeforeInit` and `onAfterInit` as well as `onBeforeUpdate` and `onAfterUpdate`.
 
 ## API reference
 
