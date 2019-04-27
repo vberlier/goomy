@@ -58,6 +58,41 @@ int main() {
 
 > You can find this example in the [`examples/basic`](https://github.com/vberlier/goomy/tree/master/examples/basic) directory.
 
+## Running the examples
+
+The project has only been tested on Linux, but doesn't rely on any platform-specific library so you should be good as long as you have a compliant C++17 compiler on hand. One of the example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/), so you need to make sure that the latest stable version is available on your system.
+
+1. Clone this repository
+
+    ``` sh
+    $ git clone https://github.com/vberlier/goomy.git
+    $ cd goomy
+    ```
+
+2. Build the project
+
+    ``` sh
+    $ mkdir cmake-build-release
+    $ cd cmake-build-release
+    $ cmake -DCMAKE_BUILD_TYPE=Release ..
+    $ make
+    ```
+
+3. Run the examples
+
+    ``` sh
+    $ ./examples/basic/example_basic
+    $ ./examples/sfml/example_sfml
+    ```
+
+### The SFML example
+
+This example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/). The executable creates a window in which you can spawn particles in a few different ways.
+
+- Clicking and dragging the left mouse button anywhere in the window creates a stream of particles (a particle spawns every frame)
+- Dragging the right mouse button and releasing it lets you shoot a single particle in a particular direction
+- Pressing the left mouse button while dragging the right mouse button lets you shoot the particle stream in a particular direction
+
 ---
 
 License - [MIT](https://github.com/vberlier/goomy/blob/master/LICENSE)
