@@ -64,8 +64,8 @@ class Engine : public internal::EngineBase {
         return Entity(*this, entityManager.createEntity());
     }
 
-    auto entity(indexType index) {
-        return Entity(*this, entityManager.getEntity(index));
+    auto entity(indexType id) {
+        return Entity(*this, entityManager.getEntity(id));
     }
 
     auto entities() {
