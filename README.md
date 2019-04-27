@@ -142,7 +142,7 @@ Note that the returned reference is a very thin wrapper that simply marks the sy
 
 #### `engine.dispatch<SignalType>(Args &&... args)`
 
-This function lets you dispatch signals throughout your systems. The template parameter of the dispatch member function must be a signal class/struct, usually generated with the `GOOMY_SIGNAL(NAME)` macro.
+This function lets you dispatch signals throughout your systems. The template parameter of the `dispatch<SignalType>()` member function must be a signal class/struct, usually generated with the `GOOMY_SIGNAL(NAME)` macro.
 
 ```cpp
 GOOMY_SIGNAL(onCustomEvent);
