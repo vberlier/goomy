@@ -230,6 +230,10 @@ position += velocity * engine.deltaTime();
 
 The framework lets you interact with the internal entities through lightweight reference wrappers that provide a nice and clean API.
 
+Entities are internally all stored contiguously in memory, in a standard `std::vector`. The engine guarantees that the vector holding the entities internally will not be mutated during the frame by buffering entity creation and deletion in separate containers, which in turn means that entity reference wrappers are valid for the entire frame.
+
+However, the engine flushes the pending modifications at the end of each frame, which potentially mutates the internal vector and invalidates references and reference wrappers. Unless you know what you're doing, the lifetime of any entity reference wrapper should not exceed the frame it was created in.
+
 #### `entity.id()`
 
 Returns the id of the entity. The id can be used to retrieve the entity from the engine instance with the `engine.entity(id)` member function.
@@ -298,6 +302,10 @@ entity.destroy();
 ### Component
 
 The framework lets you interact with the internal component instances through lightweight reference wrappers that provide a nice and clean API.
+
+Instances of each type of component are internally stored contiguously in memory in separate standard `std::vector`, very similarly to how entities are stored internally as well. The engine guarantees that the vectors holding the components internally will not be mutated during the frame by buffering component creation and deletion in separate containers, which in turn means that component reference wrappers are valid for the entire frame.
+
+However, the engine flushes the pending modifications at the end of each frame, which potentially mutates the internal vectors and invalidates references and reference wrappers. Just like with entity reference wrappers, unless you know what you're doing, the lifetime of any component reference wrapper should not exceed the frame it was created in.
 
 #### `component.id()`
 
