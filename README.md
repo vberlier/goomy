@@ -238,6 +238,8 @@ Returns the id of the entity. The id can be used to retrieve the entity from the
 auto id = entity.id();
 ```
 
+Note that this id can change over time when other entities are destroyed.
+
 #### `entity.engine()`
 
 Returns a reference to the engine instance.
@@ -291,6 +293,50 @@ Destroys the entity. This will also destroy all the components associated with t
 
 ```cpp
 entity.destroy();
+```
+
+### Component
+
+The framework lets you interact with the internal component instances through lightweight reference wrappers that provide a nice and clean API.
+
+#### `component.id()`
+
+Returns the id of the component. Note that this id is only unique for components of the same type, and can change over time when other components of the same type are destroyed.
+
+```cpp
+auto id = component.id();
+```
+
+#### `component.engine()`
+
+Returns a reference to the engine instance.
+
+```cpp
+auto &engine = component.engine();
+```
+
+#### `component.entity()`
+
+Returns a reference wrapper to the associated entity.
+
+```cpp
+auto entity = component.entity();
+```
+
+#### `component.data()`
+
+This function returns a reference to the declared component instance.
+
+```cpp
+auto &data = component.data();
+```
+
+#### `component.destroy()`
+
+Destroys the component.
+
+```cpp
+component.destroy();
 ```
 
 ---
