@@ -102,6 +102,42 @@ This example demonstrates how the framework could be used in combination with [S
 
 > The code for this example is in the [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml) directory.
 
+## Usage
+
+Getting started with `goomy` is fairly straightforward. You pretty much only need to instantiate the `goomy::Engine` template and declare your systems and components.
+
+```cpp
+using Engine = goomy::Engine<goomy::Mount<System1, System2, ...>,
+                             goomy::Register<Component1, Component2, ...>>;
+```
+
+Instantiating the template effectively generates an entity type, creates registries for your different components and wires all the systems and signals together. Everything then happens through your specialized `Engine` type alias.
+
+> You will probably need to forward-declare your system classes because you'll often want to reference your custom `Engine` in their declarations.
+
+Once you declared you custom engine type, the only thing you need to do is to instantiate it and call the `loop()` member function.
+
+```cpp
+int main() {
+    Engine().loop();
+    return 0;
+}
+```
+
+### Engine API
+
+The engine instance lets you interact with the systems, entities and components you declared when creating your custom `Engine` type. You can use it to get a reference to any of your custom systems, dispatch signals, iterate through entities and components and more. Note that the engine is explicitly marked as non-copiable, and cannot be moved.
+
+#### `engine.get<SystemType>()`
+
+Instantiating a custom `Engine` type creates instances of all the mounted system types. You can get a reference to any of your system instances by calling the templated `get<SystemType>()` member function.
+
+```cpp
+auto &system1 = engine.get<System1>();
+```
+
+Note that the returned reference is a very thin wrapper that simply marks the system as non-copiable to prevent any accident.
+
 ---
 
 License - [MIT](https://github.com/vberlier/goomy/blob/master/LICENSE)
