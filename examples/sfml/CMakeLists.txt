@@ -7,20 +7,20 @@ add_compile_definitions(EXAMPLE_SFML_RESOURCES_DIR="${PROJECT_SOURCE_DIR}/resour
 
 add_executable(${PROJECT_NAME}
         systems/AgeSystem.cpp
-        systems/AgeSystem.h
+        systems/AgeSystem.hpp
         systems/Display.cpp
-        systems/Display.h
+        systems/Display.hpp
         systems/InputEventsDispatcher.cpp
-        systems/InputEventsDispatcher.h
+        systems/InputEventsDispatcher.hpp
         systems/ParticleSystem.cpp
-        systems/ParticleSystem.h
+        systems/ParticleSystem.hpp
         systems/ResourceManager.cpp
-        systems/ResourceManager.h
+        systems/ResourceManager.hpp
         systems/Window.cpp
-        systems/Window.h
-        Engine.h
+        systems/Window.hpp
+        Engine.hpp
         main.cpp
-        main.h
+        main.hpp
         )
 
 include_directories(${PROJECT_SOURCE_DIR})

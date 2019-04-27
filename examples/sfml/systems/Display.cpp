@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.hpp"
 
 void Display::onUpdate(Engine &engine) {
     auto &window = engine.get<Window>();

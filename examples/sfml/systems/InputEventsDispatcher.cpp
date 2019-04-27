@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.hpp"
 
 InputEventsDispatcher::InputEventsDispatcher()
     : mouseX(0), mouseY(0), leftButtonPressed(false),

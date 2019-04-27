@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.hpp"
 
 Window::Window() : sf::RenderWindow(sf::VideoMode(600, 400), "example_sfml") {
     setPosition(sf::Vector2i{1200, 300});

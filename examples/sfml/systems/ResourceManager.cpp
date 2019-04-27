@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.hpp"
 
 #ifndef EXAMPLE_SFML_RESOURCES_DIR
 #define EXAMPLE_SFML_RESOURCES_DIR ""
