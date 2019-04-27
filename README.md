@@ -6,7 +6,7 @@
 
 **⚠️ Disclaimer ⚠️**
 
-This project is a proof-of-concept, and is mostly an excuse for me to get familiar with modern C++ and a few experimental features. Don't use this code.
+This project is a proof-of-concept, and is mostly an excuse for me to get familiar with modern C++ and a few experimental features. Don't use this code. _(yet?)_
 
 ## Introduction
 
@@ -196,7 +196,7 @@ void TestSystem::onUpdate(Engine &engine) {
 }
 ```
 
-It's possible to pass parameters to the `dispatch<SignalType>()` function. In that case, the framework will only call the associated member functions if the signature is compatible with the types of the parameters.
+The `engine.dispatch<SignalType>()` function lets you pass parameters to the systems handling the signal. In that case, the framework will only call the associated member functions if the signature is compatible with the types of the parameters.
 
 ```cpp
 void TestSystem::onUpdate(Engine &engine) {
@@ -221,6 +221,14 @@ void TestSystem::onUpdate(Engine &engine) {
 
 void OtherSystem::onCustomEvent(int number) {}
 ```
+
+---
+
+**💡 Tip**
+
+It's important to understand that signals don't have any runtime footprint. Every call to the `engine.dispatch<SignalType>()` function effectively results in inlined calls to the corresponding member functions on systems with compatible definitions.
+
+---
 
 ## API reference
 
