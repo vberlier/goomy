@@ -1,3 +1,5 @@
+<!-- Go to https://github.com/vberlier/goomy to read this file with formatting -->
+
 # goomy
 
 > A tiny, experimental [ECS framework](https://en.wikipedia.org/wiki/Entity_component_system).
@@ -87,11 +89,18 @@ The project has only been tested on Linux, but doesn't rely on any platform-spec
 
 ### The SFML example
 
-This example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/). The executable creates a window in which you can spawn particles in a few different ways.
+<p align="center">
+  <img width="45%" src="https://raw.githubusercontent.com/vberlier/goomy/master/examples/sfml/screenshots/1.png">
+  <img width="45%" src="https://raw.githubusercontent.com/vberlier/goomy/master/examples/sfml/screenshots/2.png">
+</p>
+
+This example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/). The executable creates a window in which you can spawn particles in a few different ways:
 
 - Clicking and dragging the left mouse button anywhere in the window creates a stream of particles (a particle spawns every frame)
 - Dragging the right mouse button and releasing it lets you shoot a single particle in a particular direction
-- Pressing the left mouse button while dragging the right mouse button lets you shoot the particle stream in a particular direction
+- Pressing the left mouse button while aiming with the right mouse button reactivates the particle stream
+
+> The code for this example is in the [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml) directory.
 
 ---
 
