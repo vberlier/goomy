@@ -156,6 +156,72 @@ Similarly, the `onUpdate` signal is also dispatched by the engine. It will call 
 
 > The engine also dispatches `onBeforeInit` and `onAfterInit` as well as `onBeforeUpdate` and `onAfterUpdate`.
 
+Member functions called by signals support some form of dependency injection. You can get a reference to the engine instance by specifying it as a parameter.
+
+```cpp
+class TestSystem {
+  public:
+    void onInit(Engine &engine) {
+        engine.shutdown();
+    }
+};
+```
+
+It's possible to create your own signals with the `GOOMY_SIGNAL(NAME)` macro.
+
+```cpp
+GOOMY_SIGNAL(onCustomEvent);
+```
+
+You don't have to use the macro but declaring a custom signal manually can get a little verbose.
+
+```cpp
+struct onCustomEvent {
+    template <typename T, typename... Args>
+    using detector =
+        decltype(std::declval<T>().onCustomEvent(std::declval<Args>()...));
+
+    template <typename T, typename... Args>
+    static void invoke(T &instance, Args &&... args) {
+        instance.onCustomEvent(std::forward<Args>(args)...);
+    }
+};
+```
+
+The macro does make things a little more readable, but any struct with a templated `detector` type and a static function template `invoke()` can be used as a signal.
+
+```cpp
+void TestSystem::onUpdate(Engine &engine) {
+    engine.dispatch<onCustomEvent>();
+}
+```
+
+It's possible to pass parameters to the `dispatch<SignalType>()` function. In that case, the framework will only call the associated member functions if the signature is compatible with the types of the parameters.
+
+```cpp
+void TestSystem::onUpdate(Engine &engine) {
+    engine.dispatch<onCustomEvent>(42);
+}
+
+void OtherSystem::onCustomEvent(int number) {}
+
+// Injecting the engine still works
+void OtherSystem::onCustomEvent(Engine &engine, int number) {}
+
+// Can omit the parameters if the function doesn't need them
+void OtherSystem::onCustomEvent() {}
+```
+
+However, if the types of the parameters are not compatible, the function will not get called.
+
+```cpp
+void TestSystem::onUpdate(Engine &engine) {
+    engine.dispatch<onCustomEvent>("will not call OtherSystem::onCustomEvent");
+}
+
+void OtherSystem::onCustomEvent(int number) {}
+```
+
 ## API reference
 
 ### Engine
