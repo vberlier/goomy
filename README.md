@@ -19,7 +19,7 @@ The framework also comes with a signaling/event system that makes use of the [de
 The following example is extremely simple and really only scratches the surface of what's possible, but it should give you a basic idea of how the framework works.
 
 ```cpp
-#include <goomy.h>
+#include <goomy.hpp>
 
 class Lifetime;
 class TestSystem;

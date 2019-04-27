@@ -1,4 +1,4 @@
-#include "goomy/EngineBase.h"
+#include "goomy/EngineBase.hpp"
 
 namespace goomy::internal {
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "goomy/EngineBase.h"
-#include "goomy/Entity.h"
-#include "goomy/Signal.h"
-#include "goomy/System.h"
-#include "goomy/Wrapper.h"
+#include "goomy/EngineBase.hpp"
+#include "goomy/Entity.hpp"
+#include "goomy/Signal.hpp"
+#include "goomy/System.hpp"
+#include "goomy/Wrapper.hpp"
 
 namespace goomy {
 

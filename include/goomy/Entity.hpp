@@ -1,6 +1,6 @@
 #pragma once
 
-#include "goomy/Registry.h"
+#include "goomy/Registry.hpp"
 #include <algorithm>
 #include <type_traits>
 #include <vector>

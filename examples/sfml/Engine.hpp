@@ -1,6 +1,6 @@
 #pragma once
 
-#include <goomy.h>
+#include <goomy.hpp>
 
 class AgeSystem;
 class Display;

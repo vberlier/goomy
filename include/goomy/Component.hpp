@@ -1,6 +1,6 @@
 #pragma once
 
-#include "goomy/Registry.h"
+#include "goomy/Registry.hpp"
 
 namespace goomy::internal {
 

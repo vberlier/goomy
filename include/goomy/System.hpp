@@ -1,6 +1,6 @@
 #pragma once
 
-#include "goomy/Signal.h"
+#include "goomy/Signal.hpp"
 #include <experimental/type_traits>
 #include <type_traits>
 

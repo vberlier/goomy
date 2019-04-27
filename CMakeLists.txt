@@ -6,20 +6,19 @@ string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fno-omit-frame-pointer -fsanitize=address")
 
 add_library(${PROJECT_NAME}
-        include/goomy/Component.h
-        include/goomy/Engine.h
-        include/goomy/EngineBase.h
+        include/goomy/Component.hpp
+        include/goomy/Engine.hpp
+        include/goomy/EngineBase.hpp
         src/EngineBase.cpp
-        include/goomy/Entity.h
-        include/goomy/Registry.h
-        include/goomy/System.h
-        include/goomy/Signal.h
-        include/goomy/Wrapper.h
-        include/goomy.h
+        include/goomy/Entity.hpp
+        include/goomy/Registry.hpp
+        include/goomy/System.hpp
+        include/goomy/Signal.hpp
+        include/goomy/Wrapper.hpp
+        include/goomy.hpp
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 add_subdirectory(examples/basic)
 add_subdirectory(examples/sfml)

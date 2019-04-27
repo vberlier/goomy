@@ -1,4 +1,4 @@
-#include <goomy.h>
+#include <goomy.hpp>
 
 class Lifetime;
 class TestSystem;
