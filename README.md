@@ -272,7 +272,7 @@ void OtherSystem::onUpdate(Dummy &dummy) {
 }
 ```
 
-Here, the `onUpdate()` function will be called each frame for every single `Dummy` component. This particular example shows that you can ask for the component reference directly, but it's also possible to request a component reference wrapper (more details in the component API reference).
+Here, the `onUpdate()` function will be called each frame for every single `Dummy` component. This particular example shows that you can ask for the component reference directly, but it's also possible to request a component reference wrapper instead if needed (more details in the component API reference).
 
 ```cpp
 void OtherSystem::onUpdate(goomy::Component<Engine, Dummy> component) {
@@ -282,7 +282,7 @@ void OtherSystem::onUpdate(goomy::Component<Engine, Dummy> component) {
 }
 ```
 
-It's worth mentioning that component injection is compatible with engine injection and custom parameters.
+It's worth mentioning that component reference injection is compatible with engine injection and custom parameters.
 
 ```cpp
 void TestSystem::onUpdate(Engine &engine) {
