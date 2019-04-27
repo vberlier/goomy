@@ -138,6 +138,92 @@ auto &system1 = engine.get<System1>();
 
 Note that the returned reference is a very thin wrapper that simply marks the system as non-copiable to prevent any accident.
 
+#### `engine.dispatch<SignalType>(Args &&... args)`
+
+We'll talk about signals in more details a bit later, but this is how you dispatch signals throughout your systems. The template parameter of the dispatch member function must be a signal class/struct, usually generated with the `GOOMY_SIGNAL(NAME)` macro.
+
+```cpp
+GOOMY_SIGNAL(onCustomEvent);
+
+engine.dispatch<onCustomEvent>(arg1, arg2, ...);
+```
+
+This code will essentially go through every system instance at compile-time and generate a call to the `onCustomEvent()` member function if it is defined.
+
+#### `engine.entity()`
+
+You can create entities with the `entity()` member function. This function returns a lightweight wrapper around a reference to the newly created internal entity.
+
+```cpp
+auto entity = engine.entity();
+```
+
+For more details check out the entity API reference.
+
+#### `engine.entity(std::size_t id)`
+
+This function lets you retrieve an entity by its id.
+
+```cpp
+auto entity = engine.entity(42);
+```
+
+#### `engine.entities()`
+
+You can iterate over every entity by using the `entities()` member function.
+
+```cpp
+for (auto entity : engine.entities()) {
+    // ...
+}
+```
+
+#### `engine.getEntityCount()`
+
+Returns the current number of entities.
+
+```cpp
+auto count = engine.getEntityCount();
+```
+
+#### `engine.components<ComponentType>()`
+
+This lets your iterate over all the components of a specific type.
+
+```cpp
+for (auto component1 : engine.components<Component1>()) {
+    // ...
+}
+```
+
+The iterator doesn't yield references to the internal components directly, but lightweight wrappers that provide a few useful member functions to let you access the id of the component or its associated entity for instance.
+
+For more details check out the component API reference.
+
+#### `engine.loop()`
+
+This function is usually called in your program's `main()`. It runs the main execution loop and will block until the engine gets shutdown.
+
+```cpp
+engine.loop();
+```
+
+#### `engine.shutdown()`
+
+You can stop the main execution loop by calling the `shutdown()` member function. The engine will cleanly finish executing the current frame and exit.
+
+```cpp
+engine.shutdown();
+```
+
+#### `engine.deltaTime()`
+
+This returns the number of seconds that it took for executing the frame.
+
+```cpp
+position += velocity * engine.deltaTime();
+```
+
 ---
 
 License - [MIT](https://github.com/vberlier/goomy/blob/master/LICENSE)
