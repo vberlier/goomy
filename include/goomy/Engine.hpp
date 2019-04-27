@@ -94,6 +94,7 @@ class Engine : public internal::EngineBase {
         start();
 
         signalDispatcher.init();
+        entityManager.flush();
 
         while (isRunning()) {
             frameTick();
