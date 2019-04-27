@@ -62,7 +62,7 @@ int main() {
 
 ## Running the examples
 
-The project has only been tested on Linux, but doesn't rely on any platform-specific library so you should be good as long as you have a compliant C++17 compiler on hand. One of the example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/), so you need to make sure that the latest stable version is available on your system.
+The project has only been tested on Linux, but doesn't rely on any platform-specific library so you should be good as long as you have a compliant C++17 compiler on hand. One of the example demonstrates how the framework could be used in combination with [SFML](https://www.sfml-dev.org/), so you'll need to make sure that the latest stable version is available on your system.
 
 1. Clone this repository
 
