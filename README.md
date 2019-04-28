@@ -331,7 +331,7 @@ You can create entities with the `entity()` member function. This function retur
 auto entity = engine.entity();
 ```
 
-For more details check out the entity API reference.
+For more details check out the [entity API reference](https://github.com/vberlier/goomy#entity).
 
 #### `engine.entity(std::size_t id)`
 
@@ -353,7 +353,7 @@ for (auto entity : engine.entities()) {
 
 #### `engine.getEntityCount()`
 
-Returns the current number of entities.
+Returns the current number of entities. The function doesn't take into account entities that have been created or destroyed in the current frame.
 
 ```cpp
 auto count = engine.getEntityCount();
@@ -371,7 +371,7 @@ for (auto component1 : engine.components<Component1>()) {
 
 The iterator doesn't yield references to the internal components directly, but lightweight wrappers that provide a few useful member functions to let you access the id of the component or its associated entity for instance.
 
-For more details check out the component API reference.
+For more details check out the [component API reference](https://github.com/vberlier/goomy#component).
 
 #### `engine.loop()`
 
@@ -399,7 +399,7 @@ position += velocity * engine.deltaTime();
 
 ### Entity
 
-The framework lets you interact with the internal entities through lightweight reference wrappers that provide a nice and clean API.
+The framework lets you interact with the internal entities through lightweight reference wrappers.
 
 Entities are internally all stored contiguously in memory, in a standard `std::vector`. The engine guarantees that the vector holding the entities internally will not be mutated during the frame by buffering entity creation and deletion in separate containers, which in turn means that entity reference wrappers are valid for the entire frame.
 
@@ -425,7 +425,7 @@ auto &engine = entity.engine();
 
 #### `entity.has<ComponentType>()`
 
-Whether the entity has a component of the given type.
+Returns whether the entity has a component of the given type.
 
 ```cpp
 bool hasComponent1 = entity.has<Component1>();
@@ -433,17 +433,17 @@ bool hasComponent1 = entity.has<Component1>();
 
 #### `entity.get<ComponentType>()`
 
-This function returns a lightweight wrapper around a reference to the component of the given type associated with the entity.
+This function returns a reference wrapper to the component of the given type attached to the entity.
 
 ```cpp
 auto component1 = entity.get<Component1>();
 ```
 
-This function should only be called if the component actually exists so make sure to check for the component with the `has<ComponentType>()` member function where appropriate.
+This function should only be called if the component actually exists, so make sure to check for the component with the `has<ComponentType>()` member function where appropriate.
 
 #### `entity.create<ComponentType>(Args &&... args)`
 
-Create and attach a new component of the given type to the entity. The arguments are passed to the constructor of the component. The function returns a component wrapper.
+Create and attach a new component of the given type to the entity. The arguments are passed to the constructor of the component. The function returns a component reference wrapper.
 
 ```cpp
 auto component1 = entity.create<Component1>(arg1, arg2, ...);
@@ -472,7 +472,7 @@ entity.destroy();
 
 ### Component
 
-The framework lets you interact with the internal component instances through lightweight reference wrappers that provide a nice and clean API.
+The framework lets you interact with the internal component instances through lightweight reference wrappers.
 
 Instances of each type of component are internally stored contiguously in memory in separate standard `std::vector`, in a very similar way to how entities are stored internally as well. The engine guarantees that the vectors holding the components internally will not be mutated during the frame by buffering component creation and deletion in separate containers, which in turn means that component reference wrappers are valid for the entire frame.
 
