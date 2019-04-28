@@ -126,7 +126,7 @@ int main() {
 
 ### Systems
 
-The framework lets you mount any class as a system, there are no requirements, no specific base class to inherit from. For instance, This makes it possible to mount an [SFML window](https://www.sfml-dev.org/tutorials/2.5/window-window.php) to your engine, there are really no limitations to what can be a system (see: [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml)).
+The framework lets you mount any class as a system, there are no requirements, no specific base class to inherit from. For instance, this makes it possible to mount an [SFML window](https://www.sfml-dev.org/tutorials/2.5/window-window.php) to your engine, there are really no limitations to what can be a system (see: [`examples/sfml`](https://github.com/vberlier/goomy/tree/master/examples/sfml)).
 
 ```cpp
 class TestSystem {};
