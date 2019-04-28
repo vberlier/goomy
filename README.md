@@ -244,7 +244,7 @@ Components must be registered when creating your custom `Engine` type.
 goomy::Register<Dummy>;
 ```
 
-The engine instance allows you to create and destroy entities and components, and iterate through them. You can check out the API reference for more information.
+The engine instance allows you to create and destroy entities and components, and iterate through them. You can check out the [API reference](https://github.com/vberlier/goomy#api-reference) for more information.
 
 ```cpp
 class Dummy {
@@ -264,7 +264,7 @@ void OtherSystem::onUpdate(Engine &engine) {
 }
 ```
 
-Since iterating over all the components of a given type is one of the most common operations you can do, the framework makes it possible to lift the iteration in the dependency injection mechanism and ask for a component reference to be injected in any member function called by a signal.
+Since iterating over all the components of a given type is a very common operation, the framework makes it possible to lift the iteration in the dependency injection machinery and ask for a component reference to be injected in any member function called by a signal.
 
 ```cpp
 void OtherSystem::onUpdate(Dummy &dummy) {
@@ -272,7 +272,7 @@ void OtherSystem::onUpdate(Dummy &dummy) {
 }
 ```
 
-Here, the `onUpdate()` function will be called each frame for every single `Dummy` component. This particular example shows that you can ask for the component reference directly, but it's also possible to request a component reference wrapper instead if needed (more details in the component API reference).
+Here, the `onUpdate()` function will be called each frame for every single `Dummy` component. This particular example shows that you can ask for the component reference directly, but it's also possible to request a component reference wrapper instead when necessary (more details in the [component API reference](https://github.com/vberlier/goomy#component)).
 
 ```cpp
 void OtherSystem::onUpdate(goomy::Component<Engine, Dummy> component) {
@@ -282,7 +282,7 @@ void OtherSystem::onUpdate(goomy::Component<Engine, Dummy> component) {
 }
 ```
 
-It's worth mentioning that component reference injection is compatible with engine injection and custom parameters.
+Note that component reference injection is compatible with engine injection and custom parameters.
 
 ```cpp
 void TestSystem::onUpdate(Engine &engine) {
