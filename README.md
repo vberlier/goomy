@@ -449,6 +449,8 @@ Create and attach a new component of the given type to the entity. The arguments
 auto component1 = entity.create<Component1>(arg1, arg2, ...);
 ```
 
+Note that if a component of the given type is already attached to the entity the new component will take its place and the current one will be destroyed.
+
 #### `entity.with<ComponentType>(Args &&... args)`
 
 This function is very similar to the `entity.create<ComponentType>()` member function, but returns the entity itself instead of a reference wrapper to the newly created component.
