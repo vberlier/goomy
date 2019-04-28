@@ -520,6 +520,20 @@ Destroys the component.
 component.destroy();
 ```
 
+## Credits
+
+This project is partly inspired by a talk by Allan Deutsch:
+
+- [Game Engine API Design](https://www.youtube.com/watch?v=W3ViIBnTTKA)
+
+Other useful resources:
+
+- [Cpu Caches and Why You Care (Scott Meyers)](https://www.youtube.com/watch?v=WDIkqP4JbkE)
+- [Modern Template Metaprogramming: A Compendium, Part I & II (Walter E. Brown)](https://www.youtube.com/watch?v=Am2is2QCvxY)
+- [Universal References in C++11 (Scott Meyers)](https://channel9.msdn.com/Shows/Going+Deep/Cpp-and-Beyond-2012-Scott-Meyers-Universal-References-in-Cpp11)
+- [Data-Oriented Design and C++ (Mike Acton)](https://www.youtube.com/watch?v=rX0ItVEVjHc)
+- [The Detection Idiom: A simpler way to SFINAE (Marshall Clow)](https://www.youtube.com/watch?v=o1ekBpEFcPc)
+
 ---
 
 License - [MIT](https://github.com/vberlier/goomy/blob/master/LICENSE)
